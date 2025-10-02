@@ -2,13 +2,17 @@
  * Purpose: To play a simple terminal game of minesweeper.
  *
  * Author: Mantsory
- * Version: 0.1.1
+ * Version: 0.2
  */
 
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class MineSweeper {
+
+    public static boolean game = true;
+
+    public static int spacesOpened = 0;
 
     public static final int MINE_COUNT= 25;//Determines how many mines are in the minefield.
 
@@ -17,27 +21,10 @@ public class MineSweeper {
                     *******************MINE SWEEPER:*****************
                     *             Welcome to minesweeper            *
                     *                     Key:                      *
-                    *                  ? = Unopened                 *
+                    *                  ■ = Unopened                 *
                     *                  O = Bomb                     *
                     *        Numbers 1-8 = Bombs around             *
                     *************************************************
-                    
-                    """;
-    public static String gameBoard =
-            """
-                        A B C D E F G H I J
-                      ***********************
-                    0 * ? ? ? ? ? ? ? ? ? ? *
-                    1 * ? ? ? ? ? ? ? ? ? ? *
-                    2 * ? ? ? ? ? ? ? ? ? ? *
-                    3 * ? ? ? ? ? ? ? ? ? ? *
-                    4 * ? ? ? ? ? ? ? ? ? ? *
-                    5 * ? ? ? ? ? ? ? ? ? ? *
-                    6 * ? ? ? ? ? ? ? ? ? ? *
-                    7 * ? ? ? ? ? ? ? ? ? ? *
-                    8 * ? ? ? ? ? ? ? ? ? ? *
-                    9 * ? ? ? ? ? ? ? ? ? ? *
-                      ***********************
                     
                     """;
     public static String USER_PROMPT =
@@ -47,43 +34,6 @@ public class MineSweeper {
                     *                Example: open 3B                    *
                     ******************************************************
                     """;
-
-    public static void main(String[] args) {
-
-        Scanner in = new Scanner(System.in);
-        String action;
-        String locString;
-        String overflow;
-
-        System.out.println(START_MSG);
-        System.out.println(gameBoard);
-
-        ArrayList<Integer> mines = new ArrayList<>(genMines());
-
-        System.out.println(USER_PROMPT);
-        action = in.next();
-        locString = in.next();
-        overflow = in.nextLine();
-
-        switch (action) {
-            case "open":
-                int loc = calcLoc(locString);
-                break;
-            case "flag":
-                System.out.println("Coming soon. Please use open for now");
-                break;
-            default:
-                System.out.println("Didn't understand the input please try again.");
-        }
-
-
-
-
-        //open location and check for surrounding mines
-        //repeat
-        //end game messages
-        //prompt to play again
-    }//end of main method
 
     public static ArrayList<Integer> genMines() {
 
@@ -108,40 +58,49 @@ public class MineSweeper {
         return mines;
     }//end of genMines
 
-    public static void openLoc(int loc, ArrayList<Integer> mines) {
 
-    }//end of openLoc
+    public static void main(String[] args) {
 
-    public static int calcLoc(String loc) {
+        GameBoard.newBoard(); //sets up the gameboard
 
-        char locChar = loc.charAt(1);
-        int locInt = loc.charAt(0);
+        //declares some variables and Scanner
+        Scanner in = new Scanner(System.in);
+        String action;
+        String locString;
+        String overflow;
 
-        switch (locChar) {
-            case 'A':
-                return (locInt+1);
-            case 'B':
-                return (locInt+1)*2;
-            case 'C':
-                return (locInt+1)*3;
-            case 'D':
-                return (locInt+1)*4;
-            case 'E':
-                return (locInt+1)*5;
-            case 'F':
-                return (locInt+1)*6;
-            case 'G':
-                return (locInt+1)*7;
-            case 'H':
-                return (locInt+1)*8;
-            case 'I':
-                return (locInt+1)*9;
-            case 'J':
-                return (locInt+1)*10;
-            default:
-                System.exit(0);
-                return 0;
+        System.out.println(START_MSG);
+        System.out.println(GameBoard.getGameBoard());
+
+        ArrayList<Integer> mines = new ArrayList<>(genMines());
+
+        int row;
+        int column;
+        int loc;
+        while (game) {
+            System.out.println(USER_PROMPT);
+            action = in.next();
+            locString = in.next();
+            overflow = in.nextLine();
+            switch (action) {
+                case "open":
+                    if (FailCheck.isInt(locString, 0, 1)) {
+                        row = Integer.parseInt(locString.substring(0, 1));
+                        column = GameBoard.getColumn(locString.charAt(1));
+                        loc = (row + 1) * (column + 1);
+                        GameBoard.updateGameBoard(row, column, loc, mines);
+                        System.out.println(GameBoard.getGameBoard());
+                    } else {
+                        System.out.println("Didn't understand the input please try again.");
+                    }
+                    break;
+                case "flag":
+                    System.out.println("Coming soon. Please use open for now");
+                    break;
+                default:
+                    System.out.println("Didn't understand the input please try again.");
+            }
         }
-
-    }//end of calcLoc
+        System.out.print("Game over. Closing program...");
+    }//end of main method
 }//end of class
