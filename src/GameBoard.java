@@ -178,39 +178,38 @@ public class GameBoard {
     public static void updateGameBoard(int row, int column, int locNum, ArrayList<Integer> mines, String func) {
         if (func.equals("open")) {
             if (mines.contains(locNum)) {
-                gameBoardInfo[row][column] = "O";
                 MineSweeper.game = false;
+                gameBoardInfo[row][column] = "\uD83D\uDCA5";
                 System.out.println("You lose.");
-                System.out.print("Game over. Closing program...");
-                System.exit(0);
-            }
-            switch (minesAround(locNum, mines)) {
-                case 1:
-                    gameBoardInfo[row][column] = "1";
-                    break;
-                case 2:
-                    gameBoardInfo[row][column] = "2";
-                    break;
-                case 3:
-                    gameBoardInfo[row][column] = "3";
-                    break;
-                case 4:
-                    gameBoardInfo[row][column] = "4";
-                    break;
-                case 5:
-                    gameBoardInfo[row][column] = "5";
-                    break;
-                case 6:
-                    gameBoardInfo[row][column] = "6";
-                    break;
-                case 7:
-                    gameBoardInfo[row][column] = "7";
-                    break;
-                case 8:
-                    gameBoardInfo[row][column] = "8";
-                    break;
-                default:
-                    gameBoardInfo[row][column] = " ";
+            } else {
+                switch (minesAround(locNum, mines)) {
+                    case 1:
+                        gameBoardInfo[row][column] = "1";
+                        break;
+                    case 2:
+                        gameBoardInfo[row][column] = "2";
+                        break;
+                    case 3:
+                        gameBoardInfo[row][column] = "3";
+                        break;
+                    case 4:
+                        gameBoardInfo[row][column] = "4";
+                        break;
+                    case 5:
+                        gameBoardInfo[row][column] = "5";
+                        break;
+                    case 6:
+                        gameBoardInfo[row][column] = "6";
+                        break;
+                    case 7:
+                        gameBoardInfo[row][column] = "7";
+                        break;
+                    case 8:
+                        gameBoardInfo[row][column] = "8";
+                        break;
+                    default:
+                        gameBoardInfo[row][column] = " ";
+                }
             }
             MineSweeper.spacesOpened++;
             if (100 - MineSweeper.spacesOpened == MineSweeper.MINE_COUNT) {

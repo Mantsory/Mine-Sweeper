@@ -2,7 +2,7 @@
  * Purpose: To play a simple terminal game of minesweeper.
  *
  * Author: Mantsory
- * Version: 0.2.1
+ * Version: 1.0
  */
 
 import java.util.ArrayList;
@@ -10,13 +10,7 @@ import java.util.Scanner;
 
 public class MineSweeper {
 
-    public static boolean game = true;
-
-    public static int spacesOpened = 0;
-
-    public static final int MINE_COUNT= 20;//Determines how many mines are in the minefield.
-
-    public static final String START_MSG =
+    private static final String START_MSG =
             """
                     *******************MINE SWEEPER:*****************
                     *             Welcome to minesweeper            *
@@ -26,7 +20,7 @@ public class MineSweeper {
                     *        Numbers 1-8 = Bombs around             *
                     *************************************************
                     """;
-    public static String USER_PROMPT =
+    private static final String USER_PROMPT =
             """
                     ******************************************************
                     * Please type in a "open" followed by row and column *
@@ -35,6 +29,12 @@ public class MineSweeper {
                     *                Example: flag 3B                    *
                     ******************************************************
                     """;
+
+    public static boolean game = true;
+
+    public static int spacesOpened = 0;
+
+    public static final int MINE_COUNT= 20;//Determines how many mines are in the minefield.
 
     public static ArrayList<Integer> genMines() {
 
@@ -62,54 +62,80 @@ public class MineSweeper {
 
     public static void main(String[] args) {
 
-        GameBoard.newBoard(); //sets up the gameboard
-
         //declares some variables and Scanner
         Scanner in = new Scanner(System.in);
+        String yesNo;
+        boolean again;
+        boolean playing = true;
         String action;
         String locString;
         String overflow;
         int row;
         int column;
         int loc;
+        ArrayList<Integer> mines;
 
-        System.out.print(START_MSG);
-        System.out.print(GameBoard.getGameBoard());
+        while (playing) {
+            again = false;
+            game = true;
+            System.out.print(START_MSG);
+            GameBoard.newBoard(); //sets up the gameboard
+            mines = new ArrayList<>(genMines()); //sets up mines
+            System.out.print(GameBoard.getGameBoard());
 
-        ArrayList<Integer> mines = new ArrayList<>(genMines());
-
-        while (game) {
-            System.out.print(USER_PROMPT);
-            action = in.next();
-            locString = in.next();
-            overflow = in.nextLine();
-            switch (action) {
-                case "open":
-                    if (FailCheck.isInt(locString, 0, 1)) {
-                        row = Integer.parseInt(locString.substring(0, 1));
-                        column = GameBoard.getColumn(locString.charAt(1));
-                        loc = row*10 + (column + 1);
-                        GameBoard.updateGameBoard(row, column, loc, mines, "open");
-                        System.out.print(GameBoard.getGameBoard());
-                    } else {
-                        System.out.println("Didn't understand the input please try again.");
-                    }
-                    break;
-                case "flag":
-                    if (FailCheck.isInt(locString, 0, 1)) {
-                        row = Integer.parseInt(locString.substring(0, 1));
-                        column = GameBoard.getColumn(locString.charAt(1));
-                        loc = row * 10 + (column + 1);
-                        GameBoard.updateGameBoard(row, column, loc, mines, "flag");
-                        System.out.print(GameBoard.getGameBoard());
+            while (game) {
+                System.out.print(USER_PROMPT);
+                action = in.next();
+                locString = in.next();
+                overflow = in.nextLine();
+                switch (action) {
+                    case "open":
+                        if (FailCheck.isInt(locString, 0, 1)) {
+                            if (FailCheck.isChar(locString, 1)) {
+                                row = Integer.parseInt(locString.substring(0, 1));
+                                column = GameBoard.getColumn(locString.charAt(1));
+                                loc = row * 10 + (column + 1);
+                                GameBoard.updateGameBoard(row, column, loc, mines, "open");
+                                System.out.print(GameBoard.getGameBoard());
+                            } else {
+                                System.out.println("Didn't understand the input please try again.");
+                            }
+                        } else {
+                            System.out.println("Didn't understand the input please try again.");
+                        }
                         break;
-                    } else {
+                    case "flag":
+                        if (FailCheck.isInt(locString, 0, 1)) {
+                            row = Integer.parseInt(locString.substring(0, 1));
+                            column = GameBoard.getColumn(locString.charAt(1));
+                            loc = row * 10 + (column + 1);
+                            GameBoard.updateGameBoard(row, column, loc, mines, "flag");
+                            System.out.print(GameBoard.getGameBoard());
+                            break;
+                        } else {
+                            System.out.println("Didn't understand the input please try again.");
+                        }
+                    default:
                         System.out.println("Didn't understand the input please try again.");
-                    }
-                default:
-                    System.out.println("Didn't understand the input please try again.");
+                }
+            }
+            while (!again) {
+                System.out.println("Game over. Would you like to play again?");
+                System.out.println("[YES/NO]");
+                yesNo = in.next();
+                overflow = in.nextLine();
+                if (FailCheck.isText(yesNo, "no")) {
+                    playing = false;
+                    break;
+                } else if (FailCheck.isText(yesNo, "yes")) {
+                    playing = true;
+                    again = true;
+                    break;
+                } else {
+                    System.out.println("Invalid input. Please try again");
+                }
             }
         }
-        System.out.print("Game over. Closing program...");
+        System.out.print("Closing program...");
     }//end of main method
 }//end of class
