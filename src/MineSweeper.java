@@ -2,7 +2,7 @@
  * Purpose: To play a simple terminal game of minesweeper.
  *
  * Author: Mantsory
- * Version: 0.2
+ * Version: 0.2.1
  */
 
 import java.util.ArrayList;
@@ -14,7 +14,7 @@ public class MineSweeper {
 
     public static int spacesOpened = 0;
 
-    public static final int MINE_COUNT= 25;//Determines how many mines are in the minefield.
+    public static final int MINE_COUNT= 20;//Determines how many mines are in the minefield.
 
     public static final String START_MSG =
             """
@@ -22,16 +22,17 @@ public class MineSweeper {
                     *             Welcome to minesweeper            *
                     *                     Key:                      *
                     *                  ■ = Unopened                 *
-                    *                  O = Bomb                     *
+                    *                  X = Flag                     *
                     *        Numbers 1-8 = Bombs around             *
                     *************************************************
-                    
                     """;
     public static String USER_PROMPT =
             """
                     ******************************************************
                     * Please type in a "open" followed by row and column *
                     *                Example: open 3B                    *
+                    *    Or type in "flag" followed by row and column    *
+                    *                Example: flag 3B                    *
                     ******************************************************
                     """;
 
@@ -68,17 +69,17 @@ public class MineSweeper {
         String action;
         String locString;
         String overflow;
-
-        System.out.println(START_MSG);
-        System.out.println(GameBoard.getGameBoard());
-
-        ArrayList<Integer> mines = new ArrayList<>(genMines());
-
         int row;
         int column;
         int loc;
+
+        System.out.print(START_MSG);
+        System.out.print(GameBoard.getGameBoard());
+
+        ArrayList<Integer> mines = new ArrayList<>(genMines());
+
         while (game) {
-            System.out.println(USER_PROMPT);
+            System.out.print(USER_PROMPT);
             action = in.next();
             locString = in.next();
             overflow = in.nextLine();
@@ -87,16 +88,24 @@ public class MineSweeper {
                     if (FailCheck.isInt(locString, 0, 1)) {
                         row = Integer.parseInt(locString.substring(0, 1));
                         column = GameBoard.getColumn(locString.charAt(1));
-                        loc = (row + 1) * (column + 1);
-                        GameBoard.updateGameBoard(row, column, loc, mines);
-                        System.out.println(GameBoard.getGameBoard());
+                        loc = row*10 + (column + 1);
+                        GameBoard.updateGameBoard(row, column, loc, mines, "open");
+                        System.out.print(GameBoard.getGameBoard());
                     } else {
                         System.out.println("Didn't understand the input please try again.");
                     }
                     break;
                 case "flag":
-                    System.out.println("Coming soon. Please use open for now");
-                    break;
+                    if (FailCheck.isInt(locString, 0, 1)) {
+                        row = Integer.parseInt(locString.substring(0, 1));
+                        column = GameBoard.getColumn(locString.charAt(1));
+                        loc = row * 10 + (column + 1);
+                        GameBoard.updateGameBoard(row, column, loc, mines, "flag");
+                        System.out.print(GameBoard.getGameBoard());
+                        break;
+                    } else {
+                        System.out.println("Didn't understand the input please try again.");
+                    }
                 default:
                     System.out.println("Didn't understand the input please try again.");
             }

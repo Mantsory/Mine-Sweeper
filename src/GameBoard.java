@@ -12,7 +12,7 @@ public class GameBoard {
         while (columnNum >= 0) {
             rowNum = 9;
             while (rowNum >= 0) {
-                gameBoardInfo[rowNum][columnNum] = "■";
+                gameBoardInfo[columnNum][rowNum] = "■";
                 rowNum--;
             }
             columnNum--;
@@ -38,73 +38,187 @@ public class GameBoard {
 
     public static int minesAround(int locNum, ArrayList<Integer> mines) {
         int minesAround = 0;
-        if (mines.contains(locNum-11)){
-            minesAround++;
-        }
-        if (mines.contains(locNum-10)){
-            minesAround++;
-        }
-        if (mines.contains(locNum-9)){
-            minesAround++;
-        }
-        if (mines.contains(locNum-1)){
-            minesAround++;
-        }
-        if (mines.contains(locNum+1)){
-            minesAround++;
-        }
-        if (mines.contains(locNum+9)){
-            minesAround++;
-        }
-        if (mines.contains(locNum+10)){
-            minesAround++;
-        }
-        if (mines.contains(locNum+11)){
-            minesAround++;
+        if (locNum > 10 && locNum < 91) {
+            if (locNum%10 == 1) {
+                if (mines.contains(locNum - 10)) {
+                    minesAround++;
+                }
+                if (mines.contains(locNum - 9)) {
+                    minesAround++;
+                }
+                if (mines.contains(locNum + 1)) {
+                    minesAround++;
+                }
+                if (mines.contains(locNum + 10)) {
+                    minesAround++;
+                }
+                if (mines.contains(locNum + 11)) {
+                    minesAround++;
+                }
+            } else if (locNum%10 == 0) {
+                if (mines.contains(locNum - 11)) {
+                    minesAround++;
+                }
+                if (mines.contains(locNum - 10)) {
+                    minesAround++;
+                }
+                if (mines.contains(locNum - 1)) {
+                    minesAround++;
+                }
+                if (mines.contains(locNum + 9)) {
+                    minesAround++;
+                }
+                if (mines.contains(locNum + 10)) {
+                    minesAround++;
+                }
+            } else {
+                if (mines.contains(locNum - 11)) {
+                    minesAround++;
+                }
+                if (mines.contains(locNum - 10)) {
+                    minesAround++;
+                }
+                if (mines.contains(locNum - 9)) {
+                    minesAround++;
+                }
+                if (mines.contains(locNum - 1)) {
+                    minesAround++;
+                }
+                if (mines.contains(locNum + 1)) {
+                    minesAround++;
+                }
+                if (mines.contains(locNum + 9)) {
+                    minesAround++;
+                }
+                if (mines.contains(locNum + 10)) {
+                    minesAround++;
+                }
+                if (mines.contains(locNum + 11)) {
+                    minesAround++;
+                }
+            }
+        } else if (locNum == 1) {
+            if (mines.contains(locNum + 1)) {
+                minesAround++;
+            }
+            if (mines.contains(locNum + 10)) {
+                minesAround++;
+            }
+            if (mines.contains(locNum + 11)) {
+                minesAround++;
+            }
+        } else if (locNum >= 2 && locNum <= 9) {
+            if (mines.contains(locNum - 1)) {
+                minesAround++;
+            }
+            if (mines.contains(locNum + 1)) {
+                minesAround++;
+            }
+            if (mines.contains(locNum + 9)) {
+                minesAround++;
+            }
+            if (mines.contains(locNum + 10)) {
+                minesAround++;
+            }
+            if (mines.contains(locNum + 11)) {
+                minesAround++;
+            }
+        } else if (locNum == 10) {
+            if (mines.contains(locNum - 1)) {
+                minesAround++;
+            }
+            if (mines.contains(locNum + 9)) {
+                minesAround++;
+            }
+            if (mines.contains(locNum + 10)) {
+                minesAround++;
+            }
+        } else if (locNum == 91) {
+            if (mines.contains(locNum - 10)) {
+                minesAround++;
+            }
+            if (mines.contains(locNum - 9)) {
+                minesAround++;
+            }
+            if (mines.contains(locNum + 1)) {
+                minesAround++;
+            }
+        } else if (locNum >= 92 && locNum <= 99) {
+            if (mines.contains(locNum - 11)) {
+                minesAround++;
+            }
+            if (mines.contains(locNum - 10)) {
+                minesAround++;
+            }
+            if (mines.contains(locNum - 9)) {
+                minesAround++;
+            }
+            if (mines.contains(locNum - 1)) {
+                minesAround++;
+            }
+            if (mines.contains(locNum + 1)) {
+                minesAround++;
+            }
+        } else if (locNum == 100) {
+            if (mines.contains(locNum - 11)) {
+                minesAround++;
+            }
+            if (mines.contains(locNum - 10)) {
+                minesAround++;
+            }
+            if (mines.contains(locNum - 1)) {
+                minesAround++;
+            }
+        } else {
+            System.out.println("Error.");
         }
         return minesAround;
     }//end of minesAround
 
-    public static void updateGameBoard(int row, int column, int locNum, ArrayList<Integer> mines) {
-        if (mines.contains(locNum)) {
-            gameBoardInfo[row][column] = "O";
-            MineSweeper.game = false;
-            System.out.println("You lose.");
-            System.out.print("Game over. Closing program...");
-            System.exit(0);
-        }
-        switch (minesAround(locNum, mines)) {
-            case 1:
-                gameBoardInfo[row][column] = "1";
-                break;
-            case 2:
-                gameBoardInfo[row][column] = "2";
-                break;
-            case 3:
-                gameBoardInfo[row][column] = "3";
-                break;
-            case 4:
-                gameBoardInfo[row][column] = "4";
-                break;
-            case 5:
-                gameBoardInfo[row][column] = "5";
-                break;
-            case 6:
-                gameBoardInfo[row][column] = "6";
-                break;
-            case 7:
-                gameBoardInfo[row][column] = "7";
-                break;
-            case 8:
-                gameBoardInfo[row][column] = "8";
-                break;
-            default:
-                gameBoardInfo[row][column] = " ";
-        }
-        MineSweeper.spacesOpened++;
-        if (100 - MineSweeper.spacesOpened == MineSweeper.MINE_COUNT) {
-            MineSweeper.game = false;
-            System.out.println("You win!");
+    public static void updateGameBoard(int row, int column, int locNum, ArrayList<Integer> mines, String func) {
+        if (func.equals("open")) {
+            if (mines.contains(locNum)) {
+                gameBoardInfo[row][column] = "O";
+                MineSweeper.game = false;
+                System.out.println("You lose.");
+                System.out.print("Game over. Closing program...");
+                System.exit(0);
+            }
+            switch (minesAround(locNum, mines)) {
+                case 1:
+                    gameBoardInfo[row][column] = "1";
+                    break;
+                case 2:
+                    gameBoardInfo[row][column] = "2";
+                    break;
+                case 3:
+                    gameBoardInfo[row][column] = "3";
+                    break;
+                case 4:
+                    gameBoardInfo[row][column] = "4";
+                    break;
+                case 5:
+                    gameBoardInfo[row][column] = "5";
+                    break;
+                case 6:
+                    gameBoardInfo[row][column] = "6";
+                    break;
+                case 7:
+                    gameBoardInfo[row][column] = "7";
+                    break;
+                case 8:
+                    gameBoardInfo[row][column] = "8";
+                    break;
+                default:
+                    gameBoardInfo[row][column] = " ";
+            }
+            MineSweeper.spacesOpened++;
+            if (100 - MineSweeper.spacesOpened == MineSweeper.MINE_COUNT) {
+                MineSweeper.game = false;
+                System.out.println("You win!");
+            }
+        }else if (func.equals("flag")) {
+            gameBoardInfo[row][column] = "X";
         }
     }//end of updateGameBoard
 
