@@ -128,7 +128,6 @@ public class MineSweeper {
                     playing = false;
                     break;
                 } else if (FailCheck.isText(yesNo, "yes")) {
-                    playing = true;
                     again = true;
                     break;
                 } else {
