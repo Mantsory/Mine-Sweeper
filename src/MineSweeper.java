@@ -2,7 +2,7 @@
  * Purpose: To play a simple terminal game of minesweeper.
  *
  * Author: Mantsory
- * Version: 1.0.1
+ * Version: 1.1.1
  */
 
 import java.util.ArrayList;
@@ -17,16 +17,12 @@ public class MineSweeper {
                     *      KEY:        ■ = Unopened                 *
                     *                  X = Flag                     *
                     *        Numbers 1-8 = Bombs around             *
+                    *                                               *
+                    *                 How to play:                  *
+                    *    Type either "open" or "flag" followed by   *
+                    *                row and column                 *
+                    *         Examples: "open 3B", "flag 3B"        *open
                     *************************************************
-                    """;
-    private static final String USER_PROMPT =
-            """
-                    ******************************************************
-                    * Please type in a "open" followed by row and column *
-                    *                Example: open 3B                    *
-                    *    Or type in "flag" followed by row and column    *
-                    *                Example: flag 3B                    *
-                    ******************************************************
                     """;
 
     public static boolean game = true;
@@ -77,12 +73,11 @@ public class MineSweeper {
             game = true;
             System.out.print(START_MSG);
             GameBoard.newBoard(); //sets up the gameboard
-            spacesOpened = 0; //resets the spaces opened
+            spacesOpened = 0; //resets the number of spaces opened
             mines = new ArrayList<>(genMines()); //sets up mines
             System.out.print(GameBoard.getGameBoard());
 
             while (game) {
-                System.out.print(USER_PROMPT);
                 action = in.next();
                 locString = in.next();
                 overflow = in.nextLine();

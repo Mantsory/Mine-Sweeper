@@ -8,7 +8,7 @@ public class GameBoard {
     public static String[][] gameBoardInfo = new String[10][10];
 
     public static void newBoard() {
-        //resets the board to a 10x10 field of ?'s
+        //resets the board to an unopened 10x10 field
         int columnNum = 9;
         int rowNum;
         while (columnNum >= 0) {
