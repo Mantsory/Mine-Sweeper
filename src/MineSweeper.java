@@ -31,7 +31,7 @@ public class MineSweeper {
 
     public static boolean game = true;
 
-    public static int spacesOpened = 0;
+    public static int spacesOpened;
 
     public static final int MINE_COUNT= 20;//Determines how many mines are in the minefield.
 
@@ -77,6 +77,7 @@ public class MineSweeper {
             game = true;
             System.out.print(START_MSG);
             GameBoard.newBoard(); //sets up the gameboard
+            spacesOpened = 0; //resets the spaces opened
             mines = new ArrayList<>(genMines()); //sets up mines
             System.out.print(GameBoard.getGameBoard());
 
@@ -93,7 +94,7 @@ public class MineSweeper {
                                 column = GameBoard.getColumn(locString.charAt(1));
                                 loc = row * 10 + (column + 1);
                                 GameBoard.updateGameBoard(row, column, loc, mines, "open");
-                                System.out.print(GameBoard.getGameBoard());
+                                System.out.println(GameBoard.getGameBoard());
                             } else {
                                 System.out.println("Didn't understand the input please try again.");
                             }
@@ -107,7 +108,7 @@ public class MineSweeper {
                             column = GameBoard.getColumn(locString.charAt(1));
                             loc = row * 10 + (column + 1);
                             GameBoard.updateGameBoard(row, column, loc, mines, "flag");
-                            System.out.print(GameBoard.getGameBoard());
+                            System.out.println(GameBoard.getGameBoard());
                             break;
                         } else {
                             System.out.println("Didn't understand the input please try again.");

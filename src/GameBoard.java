@@ -3,6 +3,8 @@ import java.util.Arrays;
 
 public class GameBoard {
 
+    public static boolean[][] gameBoardOpenedInfo = new boolean[10][10];
+
     public static String[][] gameBoardInfo = new String[10][10];
 
     public static void newBoard() {
@@ -13,6 +15,7 @@ public class GameBoard {
             rowNum = 9;
             while (rowNum >= 0) {
                 gameBoardInfo[columnNum][rowNum] = "■";
+                gameBoardOpenedInfo[columnNum][rowNum] = false;
                 rowNum--;
             }
             columnNum--;
@@ -35,6 +38,63 @@ public class GameBoard {
                 "9 * " + Arrays.toString(gameBoardInfo[9]) + " *\n" +
                 "  **********************************\n";
     }//end of getGameBoard
+
+    public static void openClear(int row, int column, int locNum, ArrayList<Integer> mines) {
+        if (locNum > 10 && locNum < 91) {
+            if (locNum%10 == 1) {
+                updateGameBoard(row-1, column, locNum-10, mines, "open");
+                updateGameBoard(row-1, column+1, locNum-9, mines, "open");
+                updateGameBoard(row, column+1, locNum+1, mines, "open");
+                updateGameBoard(row+1, column, locNum+10, mines, "open");
+                updateGameBoard(row+1, column+1, locNum+11, mines, "open");
+            } else if (locNum%10 == 0) {
+                updateGameBoard(row-1, column-1, locNum-11, mines, "open");
+                updateGameBoard(row-1, column, locNum-10, mines, "open");
+                updateGameBoard(row, column-1, locNum-1, mines, "open");
+                updateGameBoard(row+1, column-1, locNum+9, mines, "open");
+                updateGameBoard(row+1, column, locNum+10, mines, "open");
+            } else {
+                updateGameBoard(row-1, column-1, locNum-11, mines, "open");
+                updateGameBoard(row-1, column, locNum-10, mines, "open");
+                updateGameBoard(row-1, column+1, locNum-9, mines, "open");
+                updateGameBoard(row, column-1, locNum-1, mines, "open");
+                updateGameBoard(row, column+1, locNum+1, mines, "open");
+                updateGameBoard(row+1, column-1, locNum+9, mines, "open");
+                updateGameBoard(row+1, column, locNum+10, mines, "open");
+                updateGameBoard(row+1, column+1, locNum+11, mines, "open");
+            }
+        } else if (locNum == 1) {
+            updateGameBoard(row, column+1, locNum+1, mines, "open");
+            updateGameBoard(row+1, column, locNum+10, mines, "open");
+            updateGameBoard(row+1, column+1, locNum+11, mines, "open");
+        } else if (locNum >= 2 && locNum <= 9) {
+            updateGameBoard(row, column-1, locNum-1, mines, "open");
+            updateGameBoard(row, column+1, locNum+1, mines, "open");
+            updateGameBoard(row+1, column-1, locNum+9, mines, "open");
+            updateGameBoard(row+1, column, locNum+10, mines, "open");
+            updateGameBoard(row+1, column+1, locNum+11, mines, "open");
+        } else if (locNum == 10) {
+            updateGameBoard(row, column-1, locNum-1, mines, "open");
+            updateGameBoard(row+1, column-1, locNum+9, mines, "open");
+            updateGameBoard(row+1, column, locNum+10, mines, "open");
+        } else if (locNum == 91) {
+            updateGameBoard(row-1, column, locNum-10, mines, "open");
+            updateGameBoard(row-1, column+1, locNum-9, mines, "open");
+            updateGameBoard(row, column+1, locNum+1, mines, "open");
+        } else if (locNum >= 92 && locNum <= 99) {
+            updateGameBoard(row-1, column-1, locNum-11, mines, "open");
+            updateGameBoard(row-1, column, locNum-10, mines, "open");
+            updateGameBoard(row-1, column+1, locNum-9, mines, "open");
+            updateGameBoard(row, column-1, locNum-1, mines, "open");
+            updateGameBoard(row, column+1, locNum+1, mines, "open");
+        } else if (locNum == 100) {
+            updateGameBoard(row-1, column-1, locNum-11, mines, "open");
+            updateGameBoard(row-1, column, locNum-10, mines, "open");
+            updateGameBoard(row, column-1, locNum-1, mines, "open");
+        } else {
+            System.out.println("Error.");
+        }
+    }//end of openClear
 
     public static int minesAround(int locNum, ArrayList<Integer> mines) {
         int minesAround = 0;
@@ -176,7 +236,10 @@ public class GameBoard {
     }//end of minesAround
 
     public static void updateGameBoard(int row, int column, int locNum, ArrayList<Integer> mines, String func) {
+        if (gameBoardOpenedInfo[row][column]) return;
         if (func.equals("open")) {
+            gameBoardOpenedInfo[row][column] = true;
+            MineSweeper.spacesOpened++;
             if (mines.contains(locNum)) {
                 MineSweeper.game = false;
                 gameBoardInfo[row][column] = "\uD83D\uDCA5";
@@ -209,15 +272,15 @@ public class GameBoard {
                         break;
                     default:
                         gameBoardInfo[row][column] = " ";
+                        openClear(row, column, locNum, mines);
+                    }
                 }
-            }
-            MineSweeper.spacesOpened++;
-            if (100 - MineSweeper.spacesOpened == MineSweeper.MINE_COUNT) {
-                MineSweeper.game = false;
-                System.out.println("You win!");
-            }
-        }else if (func.equals("flag")) {
-            gameBoardInfo[row][column] = "X";
+        }
+        if (100 - MineSweeper.spacesOpened == MineSweeper.MINE_COUNT) {
+            MineSweeper.game = false;
+            System.out.println("You win!");
+        } else if (func.equals("flag")) {
+        gameBoardInfo[row][column] = "X";
         }
     }//end of updateGameBoard
 
