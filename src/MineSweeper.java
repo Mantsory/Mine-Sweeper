@@ -2,7 +2,7 @@
  * Purpose: To play a simple terminal game of minesweeper.
  *
  * Author: Mantsory
- * Version: 1.0
+ * Version: 1.0.1
  */
 
 import java.util.ArrayList;
@@ -14,8 +14,7 @@ public class MineSweeper {
             """
                     *******************MINE SWEEPER:*****************
                     *             Welcome to minesweeper            *
-                    *                     Key:                      *
-                    *                  ■ = Unopened                 *
+                    *      KEY:        ■ = Unopened                 *
                     *                  X = Flag                     *
                     *        Numbers 1-8 = Bombs around             *
                     *************************************************
@@ -65,7 +64,6 @@ public class MineSweeper {
         //declares some variables and Scanner
         Scanner in = new Scanner(System.in);
         String yesNo;
-        boolean again;
         boolean playing = true;
         String action;
         String locString;
@@ -76,7 +74,6 @@ public class MineSweeper {
         ArrayList<Integer> mines;
 
         while (playing) {
-            again = false;
             game = true;
             System.out.print(START_MSG);
             GameBoard.newBoard(); //sets up the gameboard
@@ -119,7 +116,7 @@ public class MineSweeper {
                         System.out.println("Didn't understand the input please try again.");
                 }
             }
-            while (!again) {
+            while (true) {
                 System.out.println("Game over. Would you like to play again?");
                 System.out.println("[YES/NO]");
                 yesNo = in.next();
@@ -128,7 +125,6 @@ public class MineSweeper {
                     playing = false;
                     break;
                 } else if (FailCheck.isText(yesNo, "yes")) {
-                    again = true;
                     break;
                 } else {
                     System.out.println("Invalid input. Please try again");
