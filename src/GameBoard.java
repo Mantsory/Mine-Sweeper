@@ -2,7 +2,7 @@
  * This is for creating the isGameActive map for Minesweeper.
  *
  * Author: Mantsory
- * Version updated: 2.1
+ * Version updated: 2.1.1
  */
 
 import java.util.HashSet;
@@ -11,26 +11,27 @@ import java.util.Set;
 public class GameBoard {
     //settings
     public static final char mineChar = 'B'; //mine character
-    private static final int ROWS = 10; //board rows
-    private static final int COLS = 10; //board columns
-    public static final int MINES = 20;
+    public static int rows; //board rows
+    public static int cols; //board columns
+    public static int mines;
+    public static int openedTiles = 0;
 
-    public static GameTile[][] gameMap = new GameTile[ROWS][COLS];
+    public static GameTile[][] gameMap;
 
     public static void printBoard() {
 
         System.out.println();
         //Header
         System.out.printf("%4s", "");
-        for (int i = 0; i < ROWS; i++) {
+        for (int i = 0; i < rows; i++) {
             System.out.printf("%-3s", i);
         }
 
         //Gameboard + column indicators
-        for (int col = 0; col < COLS; col++) {
+        for (int col = 0; col < cols; col++) {
             System.out.println();
             System.out.printf("%-3s", col);
-            for (int row = 0; row < ROWS; row++) {
+            for (int row = 0; row < rows; row++) {
                 if (gameMap[row][col].isOpen()) {
                     System.out.printf("%-3s", "[" + gameMap[row][col].getContent() + "]");
                 }
@@ -38,7 +39,7 @@ public class GameBoard {
                     System.out.printf("%-3s", "[F]");
                 }
                 else {
-                    System.out.printf("%-3s", "[U]");
+                    System.out.printf("%-3s", "[▫]");
                 }
             }
         }
@@ -47,16 +48,17 @@ public class GameBoard {
     }
 
     public static void generateMap() {
-        for (int row = 0; row < ROWS; row++) {
-            for (int col = 0; col < COLS; col++) {
+        gameMap = new GameTile[rows][cols];
+        for (int row = 0; row < rows; row++) {
+            for (int col = 0; col < cols; col++) {
                 gameMap[row][col] = new GameTile('O');
             }
         }
 
         populateMines();
 
-        for (int row = 0; row < ROWS; row++) {
-            for (int col = 0; col < COLS; col++) {
+        for (int row = 0; row < rows; row++) {
+            for (int col = 0; col < cols; col++) {
                 calcSpace(row, col);
             }
         }
@@ -64,12 +66,13 @@ public class GameBoard {
 
     public static void populateMines() {
         Set<Integer> mineLocs = new HashSet<>();
-        while (mineLocs.size()+1 < MINES) {
-            mineLocs.add((int) (Math.random() * ROWS * COLS));
+        if (mines >= rows * cols) mines = 1;
+        while (mineLocs.size()+1 <= mines) {
+            mineLocs.add((int) (Math.random() * rows * cols));
         }
         for (Integer item : mineLocs) {
-            int row = item % 10;
-            int col = item / 10;
+            int row = item % rows;
+            int col = item / rows;
             gameMap[row][col].setContent(mineChar);
         }
     }
@@ -79,9 +82,9 @@ public class GameBoard {
         int num = 0;
 
         for (int rowToCheck = -1; rowToCheck <= 1; rowToCheck++) {
-            if (rowToCheck + row >= 0 && rowToCheck + row < ROWS) {
+            if (rowToCheck + row >= 0 && rowToCheck + row < rows) {
                 for (int colToCheck = -1; colToCheck <= 1; colToCheck++) {
-                    if (colToCheck + col >= 0 && colToCheck + col < COLS) {
+                    if (colToCheck + col >= 0 && colToCheck + col < cols) {
                         if (gameMap[rowToCheck + row][colToCheck + col].getContent() == mineChar) num++;
                     }
                 }
