@@ -1,92 +1,94 @@
-import java.util.Arrays;
+/*
+ * This is for creating the isGameActive map for Minesweeper.
+ *
+ * Author: Mantsory
+ * Version updated: 2.1
+ */
+
+import java.util.HashSet;
+import java.util.Set;
 
 public class GameBoard {
     //settings
+    public static final char mineChar = 'B'; //mine character
     private static final int ROWS = 10; //board rows
     private static final int COLS = 10; //board columns
     public static final int MINES = 20;
 
-    //Game Boards
-    public static String[][] curGameBoard = new String[ROWS][COLS];
-    public static String[][] gameBoard = new String[ROWS][COLS];
-    public static boolean[][] mines = new boolean[ROWS][COLS];
-    public static boolean[][] isOpen = new boolean[ROWS][COLS];
+    public static GameTile[][] gameMap = new GameTile[ROWS][COLS];
 
-    public static String getLoc(int row, int col) {
-        if (mines[row][col]) {
-            return "B";
+    public static void printBoard() {
+
+        System.out.println();
+        //Header
+        System.out.printf("%4s", "");
+        for (int i = 0; i < ROWS; i++) {
+            System.out.printf("%-3s", i);
         }
-        int minesAround = 0;
-        for (int i = -1;i <= 1;i++) {
-            for (int j = -1;j <= 1;j++) {
-                int newRow = row + i;
-                int newCol = col + j;
-                if (newRow >= 0 && newRow < mines.length && newCol >= 0 && newCol < mines[0].length) {
-                    if (mines[newRow][newCol]) {
-                        minesAround++;
+
+        //Gameboard + column indicators
+        for (int col = 0; col < COLS; col++) {
+            System.out.println();
+            System.out.printf("%-3s", col);
+            for (int row = 0; row < ROWS; row++) {
+                if (gameMap[row][col].isOpen()) {
+                    System.out.printf("%-3s", "[" + gameMap[row][col].getContent() + "]");
+                }
+                else if (gameMap[row][col].isFlagged()) {
+                    System.out.printf("%-3s", "[F]");
+                }
+                else {
+                    System.out.printf("%-3s", "[U]");
+                }
+            }
+        }
+
+        System.out.println();
+    }
+
+    public static void generateMap() {
+        for (int row = 0; row < ROWS; row++) {
+            for (int col = 0; col < COLS; col++) {
+                gameMap[row][col] = new GameTile('O');
+            }
+        }
+
+        populateMines();
+
+        for (int row = 0; row < ROWS; row++) {
+            for (int col = 0; col < COLS; col++) {
+                calcSpace(row, col);
+            }
+        }
+    }
+
+    public static void populateMines() {
+        Set<Integer> mineLocs = new HashSet<>();
+        while (mineLocs.size()+1 < MINES) {
+            mineLocs.add((int) (Math.random() * ROWS * COLS));
+        }
+        for (Integer item : mineLocs) {
+            int row = item % 10;
+            int col = item / 10;
+            gameMap[row][col].setContent(mineChar);
+        }
+    }
+
+    public static void calcSpace(int row, int col) {
+        if (gameMap[row][col].getContent() == mineChar) return;
+        int num = 0;
+
+        for (int rowToCheck = -1; rowToCheck <= 1; rowToCheck++) {
+            if (rowToCheck + row >= 0 && rowToCheck + row < ROWS) {
+                for (int colToCheck = -1; colToCheck <= 1; colToCheck++) {
+                    if (colToCheck + col >= 0 && colToCheck + col < COLS) {
+                        if (gameMap[rowToCheck + row][colToCheck + col].getContent() == mineChar) num++;
                     }
                 }
             }
         }
-        if (minesAround == 0) {
-            return " ";
-        }
-        return String.valueOf(minesAround);
-    }
 
-    public static void calcMines() {
-        for (int i = MINES;i > 0;i--) {
-            boolean setMine = false;
-            while (!setMine) {
-                int row = (int) (Math.random() * 10);
-                int col = (int) (Math.random() * 10);
-                if (!mines[row][col]) {
-                    mines[row][col] = true;
-                    setMine = true;
-                }
-            }
-        }
-    }
-
-    public static void newGameBoard() {
-        mines = new boolean[ROWS][COLS];
-        isOpen = new boolean[ROWS][COLS];
-        calcMines();
-        for (int row = ROWS-1;row >= 0;row--) {
-            for (int col = COLS - 1; col >= 0; col--) {
-                curGameBoard[row][col] = "?";
-                gameBoard[row][col] = getLoc(row, col);
-            }
-        }
-        System.out.println(getGameBoard());
-    }
-
-    public static String getGameBoard() {
-        return  "   1  2  3  4  5  6  7  8  9  10" + "\n"+
-                "A " + Arrays.toString(curGameBoard[0]) + "\n" +
-                "B " + Arrays.toString(curGameBoard[1]) + "\n" +
-                "C " + Arrays.toString(curGameBoard[2]) + "\n" +
-                "D " + Arrays.toString(curGameBoard[3]) + "\n" +
-                "E " + Arrays.toString(curGameBoard[4]) + "\n" +
-                "F " + Arrays.toString(curGameBoard[5]) + "\n" +
-                "G " + Arrays.toString(curGameBoard[6]) + "\n" +
-                "H " + Arrays.toString(curGameBoard[7]) + "\n" +
-                "I " + Arrays.toString(curGameBoard[8]) + "\n" +
-                "J " + Arrays.toString(curGameBoard[9]);
-    }
-
-    //debug table
-    public static String getDebugGameBoard() {
-        return "   1  2  3  4  5  6  7  8  9  10" + "\n" +
-                "A " + Arrays.toString(gameBoard[0]) + "\n" +
-                "B " + Arrays.toString(gameBoard[1]) + "\n" +
-                "C " + Arrays.toString(gameBoard[2]) + "\n" +
-                "D " + Arrays.toString(gameBoard[3]) + "\n" +
-                "E " + Arrays.toString(gameBoard[4]) + "\n" +
-                "F " + Arrays.toString(gameBoard[5]) + "\n" +
-                "G " + Arrays.toString(gameBoard[6]) + "\n" +
-                "H " + Arrays.toString(gameBoard[7]) + "\n" +
-                "I " + Arrays.toString(gameBoard[8]) + "\n" +
-                "J " + Arrays.toString(gameBoard[9]);
+        if (num == 0) gameMap[row][col].setContent(' ');
+        else gameMap[row][col].setContent((char) (num + '0'));
     }
 }

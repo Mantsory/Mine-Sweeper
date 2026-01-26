@@ -1,12 +1,27 @@
 /*
- * A program that will run a terminal game of minesweeper.
+ * A program that will run a terminal isGameActive of minesweeper.
  *
  * Author: Mantsory
- * Version: 2.0.1
+ * Version: 2.1
  */
 
+import java.util.Scanner;
+
 public class MineSweeper {
+
+    public static boolean isGameActive = true;
+
     public static void main(String[] args) {
-        GameBoard.newGameBoard();
+
+        Scanner in = new Scanner(System.in);
+        String input;
+
+        GameBoard.generateMap();
+
+        while (isGameActive) {
+            GameBoard.printBoard();
+            input = in.nextLine();
+            InputFilter.input(input);
+        }
     }
 }
