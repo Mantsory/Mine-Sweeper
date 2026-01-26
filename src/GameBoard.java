@@ -49,6 +49,7 @@ public class GameBoard {
 
     public static void generateMap() {
         gameMap = new GameTile[rows][cols];
+        openedTiles = 0;
         for (int row = 0; row < rows; row++) {
             for (int col = 0; col < cols; col++) {
                 gameMap[row][col] = new GameTile('O');

@@ -10,18 +10,18 @@ public class InputFilter {
     public static void difficultyInput(String input) {
         if (input.equalsIgnoreCase("hard")) {
             GameBoard.rows = 31;
-            GameBoard.cols = 16;
-            GameBoard.mines = 350;
+            GameBoard.cols = 11;
+            GameBoard.mines = 240;
             MineSweeper.valid = true;
         } else if (input.equalsIgnoreCase("normal")) {
             GameBoard.rows = 31;
-            GameBoard.cols = 16;
-            GameBoard.mines = 250;
+            GameBoard.cols = 11;
+            GameBoard.mines = 140;
             MineSweeper.valid = true;
         } else if (input.equalsIgnoreCase("easy")) {
             GameBoard.rows = 31;
-            GameBoard.cols = 16;
-            GameBoard.mines = 150;
+            GameBoard.cols = 11;
+            GameBoard.mines = 75;
             MineSweeper.valid = true;
         } else {
             if (input.contains("-")) {
@@ -45,6 +45,18 @@ public class InputFilter {
         isKeywordOpen(input);
         isKeywordFlag(input);
     }
+
+    public static void playAgain(String input) {
+        if (input.equalsIgnoreCase("no")) {
+            MineSweeper.isPlaying = false;
+            MineSweeper.valid = true;
+        } else if (input.equalsIgnoreCase("yes")) {
+            MineSweeper.valid = true;
+        } else {
+            System.out.println("Couldn't understand. Please try again.");
+        }
+    }
+
 
     public static void isKeywordOpen(String input) {
         if (input.indexOf("open") == 0) {
