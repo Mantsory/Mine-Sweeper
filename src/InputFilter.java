@@ -30,20 +30,16 @@ public class InputFilter {
                         int rows = Integer.parseInt(input.substring(0, input.indexOf("-")));
                         int cols = Integer.parseInt(input.substring(input.indexOf("-") + 1, input.indexOf(":")));
                         int mines = Integer.parseInt(input.substring(input.indexOf(":") + 1));
+                        if (rows <= 0) return;
+                        if (cols <= 0) return;
+                        if (mines <= 0) return;
+                        GameBoard.rows = rows;
+                        GameBoard.cols = cols;
+                        GameBoard.mines = mines;
+                        MineSweeper.valid = true;
                     } catch(Exception e) {
                         System.out.println("Invalid input");
-                        return;
                     }
-                    int rows = Integer.parseInt(input.substring(0, input.indexOf("-")));
-                    int cols = Integer.parseInt(input.substring(input.indexOf("-") + 1, input.indexOf(":")));
-                    int mines = Integer.parseInt(input.substring(input.indexOf(":") + 1));
-                    if (rows <= 0) return;
-                    if (cols <= 0) return;
-                    if (mines <= 0) return;
-                    GameBoard.rows = rows;
-                    GameBoard.cols = cols;
-                    GameBoard.mines = mines;
-                    MineSweeper.valid = true;
                 }
             }
         }
