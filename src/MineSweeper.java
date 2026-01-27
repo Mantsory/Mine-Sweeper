@@ -2,15 +2,12 @@
  * A program that will run a terminal isGameActive of minesweeper.
  *
  * Author: Mantsory
- * Version: 2.1.1
+ * Version: 2.1.3
  */
-
-import java.util.Scanner;
 
 public class MineSweeper {
 
     public static boolean isGameActive = true;
-    public static boolean valid = false;
     public static boolean isPlaying = true;
 
     public static String instructions = """
@@ -27,32 +24,20 @@ public class MineSweeper {
 
     public static void main(String[] args) {
 
-        Scanner in = new Scanner(System.in);
-        String input;
-
         while (isPlaying) {
             System.out.println(instructions);
-            valid = false;
-            while (!valid) {
-                input = in.nextLine();
-                InputFilter.difficultyInput(input);
-            }
+
+            Input.getDifficultyInput();
 
             GameBoard.generateMap();
             isGameActive = true;
 
             while (isGameActive) {
                 GameBoard.printBoard();
-                input = in.nextLine();
-                InputFilter.input(input);
+                Input.getGameInput();
             }
 
-            valid = false;
-            while (!valid) {
-                System.out.print("Would you like to continue playing? YES\\NO: ");
-                input = in.nextLine();
-                InputFilter.playAgain(input);
-            }
+            Input.playAgain();
         }
     }
 }
