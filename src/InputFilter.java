@@ -2,7 +2,7 @@
  * This is for checking the input of the user
  *
  * Author: Mantsory
- * Version updated: 2.1.1
+ * Version updated: 2.1.2
  */
 
 public class InputFilter {
@@ -26,6 +26,14 @@ public class InputFilter {
         } else {
             if (input.contains("-")) {
                 if (input.contains(":")) {
+                    try {
+                        int rows = Integer.parseInt(input.substring(0, input.indexOf("-")));
+                        int cols = Integer.parseInt(input.substring(input.indexOf("-") + 1, input.indexOf(":")));
+                        int mines = Integer.parseInt(input.substring(input.indexOf(":") + 1));
+                    } catch(Exception e) {
+                        System.out.println("Invalid input");
+                        return;
+                    }
                     int rows = Integer.parseInt(input.substring(0, input.indexOf("-")));
                     int cols = Integer.parseInt(input.substring(input.indexOf("-") + 1, input.indexOf(":")));
                     int mines = Integer.parseInt(input.substring(input.indexOf(":") + 1));
