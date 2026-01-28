@@ -2,7 +2,7 @@
  * A program that will run a terminal isGameActive of minesweeper.
  *
  * Author: Mantsory
- * Version: 2.1.3
+ * Version: 2.1.4
  */
 
 public class MineSweeper {

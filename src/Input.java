@@ -2,7 +2,7 @@
  * This is for checking the input of the user
  *
  * Author: Mantsory
- * Version updated: 2.1.3
+ * Version updated: 2.1.4
  */
 
 import java.util.Scanner;
@@ -47,7 +47,9 @@ public class Input {
                 int rows = Integer.parseInt(input.substring(0, input.indexOf("-")));
                 int cols = Integer.parseInt(input.substring(input.indexOf("-") + 1, input.indexOf(":")));
                 int mines = Integer.parseInt(input.substring(input.indexOf(":") + 1));
-                if (rows <= 0||cols <= 0||mines<=0) return;
+                if (rows <= 0|| rows >= 100
+                    ||cols <= 0|| cols >= 100
+                    ||mines<=0) return;
                 GameBoard.rows = rows;
                 GameBoard.cols = cols;
                 GameBoard.mines = mines;
@@ -87,9 +89,17 @@ public class Input {
 
 
     public static void isKeywordOpen(String input) {
-        if (input.indexOf("open") == 0&& input.contains("-")) {
-            String string = input.substring(4);
+        if (input.contains("open") && input.contains("-")) {
+            String string = input.substring(input.indexOf("open") + 4);
             string = string.trim();
+
+            try {
+                int row = Integer.parseInt(string.substring(0, string.indexOf("-")));
+                int col = Integer.parseInt(string.substring(string.indexOf("-") + 1));
+            } catch (Exception e) {
+                System.out.println("Invalid input");
+                return;
+            }
 
             int row = Integer.parseInt(string.substring(0, string.indexOf("-")));
             int col = Integer.parseInt(string.substring(string.indexOf("-") + 1));
@@ -130,8 +140,16 @@ public class Input {
 
     public static void isKeywordFlag(String input) {
         if (input.contains("flag")&&input.contains("-")) {
-            String string = input.substring(4);
+            String string = input.substring(input.indexOf("flag" + 4));
             string = string.trim();
+
+            try {
+                int row = Integer.parseInt(string.substring(0, string.indexOf("-")));
+                int col = Integer.parseInt(string.substring(string.indexOf("-") + 1));
+            } catch (Exception e) {
+                System.out.println("Invalid input");
+                return;
+            }
 
             int row = Integer.parseInt(string.substring(0, string.indexOf("-")));
             int col = Integer.parseInt(string.substring(string.indexOf("-") + 1));
@@ -146,7 +164,7 @@ public class Input {
     }
 
     public static void checkGameEnd(int row, int col) {
-        if (GameBoard.gameMap[row][col].getContent() == GameBoard.mineChar) {
+        if (GameBoard.gameMap[row][col].getContent() == GameBoard.mineChar && GameBoard.gameMap[row][col].isOpen()) {
             MineSweeper.isGameActive = false;
             GameBoard.printBoard();
             System.out.println("You found a mine. \nGAME OVER.");
