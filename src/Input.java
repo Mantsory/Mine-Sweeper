@@ -2,7 +2,7 @@
  * This is for checking the input of the user
  *
  * Author: Mantsory
- * Version updated: 2.1.4
+ * Version updated: 2.1.5
  */
 
 import java.util.Scanner;
@@ -11,24 +11,13 @@ public class Input {
 
     public static boolean valid = false;
 
-    public static void getDifficultyInput(){
-
-        Scanner in = new Scanner(System.in);
-
-        valid = false;
-        while (!valid) {
-            String input = in.nextLine();
-            difficultyInput(input);
-        }
-    }
-
     public static void difficultyInput(String input) {
         if (input.equalsIgnoreCase("hard")) {
             GameBoard.rows = 31;
             GameBoard.cols = 11;
             GameBoard.mines = 240;
             valid = true;
-        } else if (input.equalsIgnoreCase("normal")) {
+        } else if (input.equalsIgnoreCase("norm")) {
             GameBoard.rows = 31;
             GameBoard.cols = 11;
             GameBoard.mines = 140;

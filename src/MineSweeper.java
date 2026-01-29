@@ -1,9 +1,14 @@
 /*
- * A program that will run a terminal isGameActive of minesweeper.
+ * A program that will run a terminal game of minesweeper.
  *
  * Author: Mantsory
- * Version: 2.1.4
+ * Version: 2.1.5
  */
+
+import LauncherGUI.Buttons;
+import LauncherGUI.LaunchWindow;
+
+import javax.swing.SwingUtilities;
 
 public class MineSweeper {
 
@@ -27,7 +32,20 @@ public class MineSweeper {
         while (isPlaying) {
             System.out.println(instructions);
 
-            Input.getDifficultyInput();
+            SwingUtilities.invokeLater(LaunchWindow::new);
+
+            while (true) {
+                try {
+                    Thread.sleep(50);
+                } catch (Exception e) {}
+                if (Buttons.playing) {
+                    try {
+                        Input.difficultyInput(Buttons.difficulty);
+                        break;
+                    } catch (Exception e) {
+                    }
+                }
+            }
 
             GameBoard.generateMap();
             isGameActive = true;
