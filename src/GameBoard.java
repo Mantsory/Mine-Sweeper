@@ -2,7 +2,7 @@
  * This is for creating the isGameActive map for Minesweeper.
  *
  * Author: Mantsory
- * Version updated: 2.1.7
+ * Version updated: 2.1.8
  */
 
 import java.util.HashSet;
@@ -18,6 +18,9 @@ public class GameBoard {
 
     public static GameTile[][] gameMap;
 
+    /**
+     * Prints the board to terminal.
+     */
     public static void printBoard() {
 
         System.out.println();
@@ -47,7 +50,11 @@ public class GameBoard {
         System.out.println();
     }
 
+    /**
+     * Generates a minefield map.
+     */
     public static void generateMap() {
+        //Initializes everything to 'O'
         gameMap = new GameTile[cols][rows];
         openedTiles = 0;
         for (int col = 0; col < cols; col++) {
@@ -58,6 +65,7 @@ public class GameBoard {
 
         populateMines();
 
+        //Calculates all spaces numbers
         for (int col = 0; col < cols; col++) {
             for (int row = 0; row < rows; row++) {
                 calcSpace(col, row);
@@ -65,9 +73,11 @@ public class GameBoard {
         }
     }
 
+    /**
+     * creates a specific number of mines to generate
+     */
     public static void populateMines() {
         Set<Integer> mineLocs = new HashSet<>();
-        if (mines >= cols * rows) mines = 1;
         while (mineLocs.size()+1 <= mines) {
             mineLocs.add((int) (Math.random() * cols * rows));
         }
@@ -78,6 +88,11 @@ public class GameBoard {
         }
     }
 
+    /**
+     * Calculates the number of mines around the space.
+     * @param col The column to check.
+     * @param row The row to check.
+     */
     public static void calcSpace(int col, int row) {
         if (gameMap[col][row].getContent() == mineChar) return;
         int num = 0;

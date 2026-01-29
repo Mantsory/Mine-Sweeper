@@ -1,13 +1,12 @@
 /*
  * Author: Mantsory
- * Version updated: 2.1.7
+ * Version updated: 2.1.8
  */
 
 package LauncherGUI;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
@@ -21,28 +20,32 @@ public class LaunchWindow {
     }
 
     private void initialize() {
-        Buttons.playing = false;
+        LauncherButtonListeners.playing = false;
         JFrame frame = initFrame();
+
         JPanel topPanel = new JPanel(); frame.add(topPanel , BorderLayout.NORTH);
         topPanel.setBackground(Color.BLACK);
+
         JPanel centerPanel = new JPanel(); frame.add(centerPanel, BorderLayout.CENTER);
         centerPanel.setBackground(Color.BLACK);
+
         JPanel bottomPanel = new JPanel(); frame.add(bottomPanel, BorderLayout.SOUTH);
         bottomPanel.setBackground(Color.BLACK);
 
-        JLabel[] labels = Labels.initLabels();
+        JLabel[] labels = LauncherLabels.initLabels();
         topPanel.add(labels[0]);
         centerPanel.add(labels[1]);
         bottomPanel.add(labels[2]);
 
-        fields = TextFields.initCustomDifFields(centerPanel);
+        fields = LauncherTextFields.initCustomDifFields(centerPanel);
 
-        JButton[] difButs = Buttons.initDifButs(topPanel);
-        JButton play = Buttons.initPlayButton(bottomPanel);
+        JButton[] difButs = LauncherButtons.initDifButs(topPanel);
+        JButton play = LauncherButtons.initPlayButton(bottomPanel);
 
 
-        Buttons.difButtonListener(difButs[0], difButs[1], difButs[2], difButs[3], fields);
-        Buttons.playButtonListener(play, frame, fields, labels[2]);
+        LauncherButtonListeners.difButtonListener(difButs[0], difButs[1], difButs[2], difButs[3], fields);
+        LauncherButtonListeners.playButtonListener(play, frame, fields, labels[2]);
+
         frame.addWindowListener(new WindowAdapter() {
             @Override
             public void windowOpened(WindowEvent e) {
@@ -73,7 +76,7 @@ public class LaunchWindow {
     private class Worker extends SwingWorker<Void, Void> {
         @Override
         protected Void doInBackground() {
-            while (!isCancelled()) {
+            while (!LauncherButtonListeners.playing) {
                 try {
                     String range;
                     int cols = Integer.parseInt(fields[0].getText());

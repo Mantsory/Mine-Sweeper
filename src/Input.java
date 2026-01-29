@@ -1,6 +1,6 @@
 /*
  * Author: Mantsory
- * Version updated: 2.1.7
+ * Version updated: 2.1.8
  */
 
 import java.util.Scanner;
@@ -9,7 +9,7 @@ public class Input {
 
     public static boolean valid = false;
 
-    public static void difficultyInput(String input) {
+    public static void getDifficulty(String input) {
         if (input.equalsIgnoreCase("hard")) {
             GameBoard.rows = 11;
             GameBoard.cols = 31;

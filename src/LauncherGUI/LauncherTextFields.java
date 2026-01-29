@@ -1,6 +1,6 @@
 /*
  * Author: Mantsory
- * Version updated: 2.1.7
+ * Version updated: 2.1.8
  */
 
 package LauncherGUI;
@@ -8,7 +8,7 @@ package LauncherGUI;
 import javax.swing.*;
 import java.awt.*;
 
-public class TextFields {
+public class LauncherTextFields {
     public static JTextField[] initCustomDifFields(JPanel panel) {
         JTextField[] customDifFields = new JTextField[3];
         customDifFields[0] = initColsField(); panel.add(customDifFields[0]);
@@ -18,10 +18,9 @@ public class TextFields {
     }
 
     public static void setFieldTips(JTextField[] fields, boolean active) {
-
         if (active) {
             fields[0].setToolTipText("Number of columns. 2-50");
-            fields[1].setToolTipText("Number of cols. 2-50");
+            fields[1].setToolTipText("Number of rows. 2-50");
             fields[2].setToolTipText("Number of mines. 1-2499");
         } else {
             for (JTextField field : fields) {
@@ -34,6 +33,7 @@ public class TextFields {
         JTextField field = createField();
         field.setToolTipText("Only for custom difficulty.");
         field.setEnabled(false);
+        field.setBackground(Color.DARK_GRAY);
         return field;
     }
 
@@ -41,6 +41,7 @@ public class TextFields {
         JTextField field = createField();
         field.setToolTipText("Only for custom difficulty.");
         field.setEnabled(false);
+        field.setBackground(Color.DARK_GRAY);
         return field;
     }
 
@@ -48,6 +49,7 @@ public class TextFields {
         JTextField field = createField();
         field.setToolTipText("Only for custom difficulty.");
         field.setEnabled(false);
+        field.setBackground(Color.DARK_GRAY);
         return field;
     }
 

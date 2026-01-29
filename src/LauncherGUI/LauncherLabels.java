@@ -1,6 +1,6 @@
 /*
  * Author: Mantsory
- * Version updated: 2.1.6
+ * Version updated: 2.1.8
  */
 
 package LauncherGUI;
@@ -8,7 +8,7 @@ package LauncherGUI;
 import javax.swing.*;
 import java.awt.*;
 
-public class Labels {
+public class LauncherLabels {
     public static JLabel[] initLabels() {
         JLabel[] labels = new JLabel[3];
         labels[0] = initDifficulty();

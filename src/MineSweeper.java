@@ -2,10 +2,10 @@
  * A program that will run a terminal game of minesweeper.
  *
  * Author: Mantsory
- * Version: 2.1.7
+ * Version: 2.1.8
  */
 
-import LauncherGUI.Buttons;
+import LauncherGUI.LauncherButtonListeners;
 import LauncherGUI.LaunchWindow;
 
 import javax.swing.SwingUtilities;
@@ -34,12 +34,11 @@ public class MineSweeper {
                 try {
                     Thread.sleep(50);
                 } catch (Exception e) {}
-                if (Buttons.playing) {
+                if (LauncherButtonListeners.playing) {
                     try {
-                        Input.difficultyInput(Buttons.difficulty);
+                        Input.getDifficulty(LauncherButtonListeners.difficulty);
                         break;
-                    } catch (Exception e) {
-                    }
+                    } catch (Exception e) {}
                 }
             }
 
