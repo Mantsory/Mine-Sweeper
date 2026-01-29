@@ -2,7 +2,7 @@
  * A program that will run a terminal game of minesweeper.
  *
  * Author: Mantsory
- * Version: 2.1.6
+ * Version: 2.1.7
  */
 
 import LauncherGUI.Buttons;
@@ -17,13 +17,9 @@ public class MineSweeper {
 
     public static String instructions = """
             ********************Instructions:********************
-            *        To start simply type in difficulty:        *
-            *              easy  |  normal  | hard              *
-            *        Or custom difficulty ex( 10-30:10 )        *
-            * (number of rows)-(number of columns):(mine count) *
             * Once the game board is printed out simply type in:*
-            *           flag (row)-(column) to flag or          *
-            *           open (row)-(column) to open             *
+            *           flag (column)-(row) to flag or          *
+            *           open (column)-(row) to open             *
             *****************************************************
             """;
 

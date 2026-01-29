@@ -1,6 +1,6 @@
 /*
  * Author: Mantsory
- * Version updated: 2.1.6
+ * Version updated: 2.1.7
  */
 
 package LauncherGUI;
@@ -116,20 +116,17 @@ public class Buttons {
 
                 try {
                     int i = Integer.parseInt(customFields[2].getText());
-                    boolean b = i <= 2499 && i > 0;
+
+                    int cols = Integer.parseInt(customFields[0].getText());
+                    int rows = Integer.parseInt(customFields[1].getText());
+                    int maxMines = (cols*rows-1);
+                    boolean b = i <= maxMines && i > 0;
                     if (!b) {
                         System.out.println("Number is out of bounds 0-2499.");
-                        label.setText("Number is out of bounds 1-2499.");
+                        label.setText("Number is out of bounds 1-" + maxMines + ".");
                         customFields[2].setBackground(Color.RED);
                         return;
                     }
-                    boolean lessThanSpaces = i < Integer.parseInt(customFields[0].getText())*Integer.parseInt(customFields[1].getText()) - 1;
-                    if (!lessThanSpaces) {
-                        System.out.println("Number is higher than the amount of spaces available.");
-                        label.setText("Number is higher than the amount of spaces available.");
-                        customFields[2].setBackground(Color.RED);
-                        return;
-                    };
                 } catch (Exception error){
                     customFields[2].setBackground(Color.RED);
                     System.out.println("Needs to be an integer.");

@@ -1,14 +1,20 @@
 /*
  * Author: Mantsory
- * Version updated: 2.1.6
+ * Version updated: 2.1.7
  */
 
 package LauncherGUI;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class LaunchWindow {
+
+    private JTextField[] fields;
+    private Worker worker;
 
     public LaunchWindow() {
         initialize();
@@ -29,14 +35,26 @@ public class LaunchWindow {
         centerPanel.add(labels[1]);
         bottomPanel.add(labels[2]);
 
-        JTextField[] customDifficulty = TextFields.initCustomDifFields(centerPanel);
+        fields = TextFields.initCustomDifFields(centerPanel);
 
         JButton[] difButs = Buttons.initDifButs(topPanel);
         JButton play = Buttons.initPlayButton(bottomPanel);
 
 
-        Buttons.difButtonListener(difButs[0], difButs[1], difButs[2], difButs[3], customDifficulty);
-        Buttons.playButtonListener(play, frame, customDifficulty, labels[2]);
+        Buttons.difButtonListener(difButs[0], difButs[1], difButs[2], difButs[3], fields);
+        Buttons.playButtonListener(play, frame, fields, labels[2]);
+        frame.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowOpened(WindowEvent e) {
+                worker = new Worker();
+                worker.execute();
+            }
+
+            @Override
+            public void windowClosing(WindowEvent e) {
+                if (worker != null) worker.cancel(true);
+            }
+        });
     }
 
     private JFrame initFrame() {
@@ -47,8 +65,27 @@ public class LaunchWindow {
         frame.setLocationRelativeTo(null);
         frame.setResizable(false);
         frame.setVisible(true);
-        frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         return frame;
+    }
+
+    private class Worker extends SwingWorker<Void, Void> {
+        @Override
+        protected Void doInBackground() {
+            while (!isCancelled()) {
+                try {
+                    String range;
+                    int cols = Integer.parseInt(fields[0].getText());
+                    int rows = Integer.parseInt(fields[1].getText());
+                    range = "1-" + (cols*rows-1);
+                    fields[2].setToolTipText("Number of mines. " + range);
+                } catch (Exception e) {}
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {}
+            }
+            return null;
+        }
     }
 }

@@ -1,6 +1,6 @@
 /*
  * Author: Mantsory
- * Version updated: 2.1.6
+ * Version updated: 2.1.7
  */
 
 package LauncherGUI;
@@ -21,7 +21,7 @@ public class TextFields {
 
         if (active) {
             fields[0].setToolTipText("Number of columns. 2-50");
-            fields[1].setToolTipText("Number of rows. 2-50");
+            fields[1].setToolTipText("Number of cols. 2-50");
             fields[2].setToolTipText("Number of mines. 1-2499");
         } else {
             for (JTextField field : fields) {
