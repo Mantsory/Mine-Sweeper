@@ -1,3 +1,8 @@
+/*
+ * Author: Mantsory
+ * Version updated: 2.1.6
+ */
+
 package LauncherGUI;
 
 import javax.swing.*;
@@ -22,6 +27,7 @@ public class LaunchWindow {
         JLabel[] labels = Labels.initLabels();
         topPanel.add(labels[0]);
         centerPanel.add(labels[1]);
+        bottomPanel.add(labels[2]);
 
         JTextField[] customDifficulty = TextFields.initCustomDifFields(centerPanel);
 
@@ -30,7 +36,7 @@ public class LaunchWindow {
 
 
         Buttons.difButtonListener(difButs[0], difButs[1], difButs[2], difButs[3], customDifficulty);
-        Buttons.playButtonListener(play, frame, customDifficulty);
+        Buttons.playButtonListener(play, frame, customDifficulty, labels[2]);
     }
 
     private JFrame initFrame() {

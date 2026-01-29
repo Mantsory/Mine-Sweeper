@@ -2,7 +2,7 @@
  * A program that will run a terminal game of minesweeper.
  *
  * Author: Mantsory
- * Version: 2.1.5
+ * Version: 2.1.6
  */
 
 import LauncherGUI.Buttons;

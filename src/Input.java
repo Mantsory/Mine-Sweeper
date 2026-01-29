@@ -1,8 +1,6 @@
 /*
- * This is for checking the input of the user
- *
  * Author: Mantsory
- * Version updated: 2.1.5
+ * Version updated: 2.1.6
  */
 
 import java.util.Scanner;
