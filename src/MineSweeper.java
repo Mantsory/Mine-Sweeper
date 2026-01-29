@@ -2,11 +2,11 @@
  * A program that will run a terminal game of minesweeper.
  *
  * Author: Mantsory
- * Version: 2.1.8
+ * Version: 2.2
  */
 
 import LauncherGUI.LauncherButtonListeners;
-import LauncherGUI.LaunchWindow;
+import LauncherGUI.LauncherWindow;
 
 import javax.swing.SwingUtilities;
 
@@ -28,7 +28,7 @@ public class MineSweeper {
         while (isPlaying) {
             System.out.println(instructions);
 
-            SwingUtilities.invokeLater(LaunchWindow::new);
+            SwingUtilities.invokeLater(LauncherWindow::new);
 
             while (true) {
                 try {

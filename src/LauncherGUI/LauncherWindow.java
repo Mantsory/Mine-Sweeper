@@ -1,6 +1,6 @@
 /*
  * Author: Mantsory
- * Version updated: 2.1.8
+ * Version updated: 2.2
  */
 
 package LauncherGUI;
@@ -10,12 +10,12 @@ import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-public class LaunchWindow {
+public class LauncherWindow {
 
     private JTextField[] fields;
     private Worker worker;
 
-    public LaunchWindow() {
+    public LauncherWindow() {
         initialize();
     }
 
