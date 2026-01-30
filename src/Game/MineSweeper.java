@@ -2,7 +2,7 @@ package Game;/*
  * A program that will run a GUI game of minesweeper.
  *
  * Author: Mantsory
- * Version: 2.2.2
+ * Version updated: 2.2.3
  */
 
 import GameGUI.GameWindow;
@@ -16,6 +16,7 @@ public class MineSweeper {
 
     public static boolean isGameActive = true;
     public static boolean isPlaying = true;
+    public static String version = "Snapshot 2.2.3";
 
     public static void main(String[] args) {
         while (isPlaying) {
@@ -24,7 +25,7 @@ public class MineSweeper {
             while (true) {
                 try {
                     Thread.sleep(50);
-                } catch (Exception e) {}
+                } catch (Exception _) {}
                 if (LauncherButtonListeners.playing) {
                     Input.getDifficulty(LauncherButtonListeners.difficulty);
                     LauncherButtonListeners.playing = false;
@@ -40,7 +41,7 @@ public class MineSweeper {
             while (isGameActive) {
                 try {
                     Thread.sleep(50);
-                } catch (Exception e) {}
+                } catch (Exception _) {}
                 if (GameButtonListeners.processInput) {
                     Input.getGameInput(GameButtonListeners.input);
                     GameButtonListeners.processInput = false;
@@ -50,7 +51,7 @@ public class MineSweeper {
             while (true) {
                 try {
                     Thread.sleep(50);
-                } catch (Exception e) {}
+                } catch (Exception _) {}
                 if (GameButtonListeners.processInput) {
                     GameButtonListeners.processInput = false;
                     break;

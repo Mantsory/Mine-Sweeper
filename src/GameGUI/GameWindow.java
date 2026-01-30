@@ -1,6 +1,6 @@
 /*
  * Author: Mantsory
- * Version updated: 2.2.2
+ * Version updated: 2.2.3
  */
 
 package GameGUI;
@@ -25,11 +25,19 @@ public class GameWindow {
         bottomPanel.setBackground(Color.BLACK);
         frame.add(bottomPanel, BorderLayout.SOUTH);
 
+        JPanel topPanel = new JPanel();
+        topPanel.setSize(200, 40);
+        topPanel.setBackground(Color.BLACK);
+        frame.add(topPanel, BorderLayout.NORTH);
+
         JButton playAgainButton = GameButtons.initPlayAgainButton(frame);
         bottomPanel.add(playAgainButton);
 
+        JLabel winLossLabel = new JLabel();
+        winLossLabel.setSize(32,32);
+
         JPanel[][] buttonPanels = new JPanel[GameBoard.cols][GameBoard.rows];
-        JButton[][] buttons = GameButtons.initMineButtons(buttonPanels, playAgainButton);
+        JButton[][] buttons = GameButtons.initMineButtons(buttonPanels, playAgainButton, topPanel, winLossLabel);
         createBoard(buttonPanels, mainPanel);
     }
 

@@ -1,6 +1,6 @@
 /*
  * Author: Mantsory
- * Version updated: 2.2
+ * Version updated: 2.2.3
  */
 
 package LauncherGUI;
@@ -35,6 +35,7 @@ public class LauncherWindow {
         JLabel[] labels = LauncherLabels.initLabels();
         topPanel.add(labels[0]);
         centerPanel.add(labels[1]);
+        bottomPanel.add(labels[3]);
         bottomPanel.add(labels[2]);
 
         fields = LauncherTextFields.initCustomDifFields(centerPanel);

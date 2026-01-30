@@ -1,6 +1,6 @@
 /*
  * Author: Mantsory
- * Version: 2.2.1
+ * Version: 2.2.3
  */
 
 package LauncherGUI;
@@ -46,7 +46,10 @@ public class LauncherButtonListeners {
     public static void playButtonListener(JButton play, JFrame frame, JTextField[] customFields, JLabel label) {
         play.getKeyListeners();
         play.addActionListener(e -> {
-            if (difficulty.equals("easy")
+            if (difficulty == null) {
+                System.out.println("You need to select a difficulty.");
+                label.setText("You need to select a difficulty.");
+            } else if (difficulty.equals("easy")
                     ||difficulty.equals("norm")
                     ||difficulty.equals("hard")) {
                 playing = true;
@@ -110,9 +113,6 @@ public class LauncherButtonListeners {
                 difficulty = customFields[0].getText() + "-" + customFields[1].getText() + ":" + customFields[2].getText();
                 playing = true;
                 frame.dispose();
-            } else {
-                System.out.println("You need to select a difficulty.");
-                label.setText("You need to select a difficulty.");
             }
         });
     }
