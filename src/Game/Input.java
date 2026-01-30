@@ -1,6 +1,6 @@
 package Game;/*
  * Author: Mantsory
- * Version updated: 2.2.1
+ * Version updated: 2.2.2
  */
 
 import java.util.Scanner;
@@ -35,25 +35,6 @@ public class Input {
     public static void getGameInput(String input) {
         isKeywordOpen(input);
         isKeywordFlag(input);
-    }
-
-    public static void playAgain() {
-
-        Scanner in = new Scanner(System.in);
-        valid = false;
-
-        while (!valid) {
-            System.out.print("Would you like to continue playing? YES\\NO: ");
-            String input = in.nextLine();
-            if (input.equalsIgnoreCase("no")) {
-                MineSweeper.isPlaying = false;
-                valid = true;
-            } else if (input.equalsIgnoreCase("yes")) {
-                valid = true;
-            } else {
-                System.out.println("Couldn't understand. Please try again.");
-            }
-        }
     }
 
 

@@ -1,6 +1,6 @@
 /*
  * Author: Mantsory
- * Version updated: 2.2.1
+ * Version updated: 2.2.2
  */
 
 package GameGUI;
@@ -18,11 +18,19 @@ public class GameWindow {
 
     private void initialize() {
         JFrame frame = initFrame();
-        JPanel panel = initCenterPanel();
-        frame.add(panel, BorderLayout.CENTER);
+        JPanel mainPanel = initCenterPanel();
+        frame.add(mainPanel, BorderLayout.CENTER);
+
+        JPanel bottomPanel = new JPanel();
+        bottomPanel.setBackground(Color.BLACK);
+        frame.add(bottomPanel, BorderLayout.SOUTH);
+
+        JButton playAgainButton = GameButtons.initPlayAgainButton(frame);
+        bottomPanel.add(playAgainButton);
+
         JPanel[][] buttonPanels = new JPanel[GameBoard.cols][GameBoard.rows];
-        JButton[][] buttons = MineButton.initMineButtons(buttonPanels);
-        createBoard(buttonPanels, panel);
+        JButton[][] buttons = GameButtons.initMineButtons(buttonPanels, playAgainButton);
+        createBoard(buttonPanels, mainPanel);
     }
 
     private JFrame initFrame() {

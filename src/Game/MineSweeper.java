@@ -1,12 +1,12 @@
 package Game;/*
- * A program that will run a terminal game of minesweeper.
+ * A program that will run a GUI game of minesweeper.
  *
  * Author: Mantsory
- * Version: 2.2.1
+ * Version: 2.2.2
  */
 
 import GameGUI.GameWindow;
-import GameGUI.MineButtonListener;
+import GameGUI.GameButtonListeners;
 import LauncherGUI.LauncherButtonListeners;
 import LauncherGUI.LauncherWindow;
 
@@ -17,19 +17,8 @@ public class MineSweeper {
     public static boolean isGameActive = true;
     public static boolean isPlaying = true;
 
-    public static String instructions = """
-            ********************Instructions:********************
-            * Once the game board is printed out simply type in:*
-            *           flag (column)-(row) to flag or          *
-            *           open (column)-(row) to open             *
-            *****************************************************
-            """;
-
     public static void main(String[] args) {
-
         while (isPlaying) {
-            System.out.println(instructions);
-
             SwingUtilities.invokeLater(LauncherWindow::new);
 
             while (true) {
@@ -37,10 +26,9 @@ public class MineSweeper {
                     Thread.sleep(50);
                 } catch (Exception e) {}
                 if (LauncherButtonListeners.playing) {
-                    try {
-                        Input.getDifficulty(LauncherButtonListeners.difficulty);
-                        break;
-                    } catch (Exception e) {}
+                    Input.getDifficulty(LauncherButtonListeners.difficulty);
+                    LauncherButtonListeners.playing = false;
+                    break;
                 }
             }
 
@@ -53,13 +41,21 @@ public class MineSweeper {
                 try {
                     Thread.sleep(50);
                 } catch (Exception e) {}
-                if (MineButtonListener.processInput) {
-                    Input.getGameInput(MineButtonListener.input);
-                    MineButtonListener.processInput = false;
+                if (GameButtonListeners.processInput) {
+                    Input.getGameInput(GameButtonListeners.input);
+                    GameButtonListeners.processInput = false;
                 }
             }
 
-            Input.playAgain();
+            while (true) {
+                try {
+                    Thread.sleep(50);
+                } catch (Exception e) {}
+                if (GameButtonListeners.processInput) {
+                    GameButtonListeners.processInput = false;
+                    break;
+                }
+            }
         }
     }
 }

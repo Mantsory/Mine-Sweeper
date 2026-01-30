@@ -1,6 +1,6 @@
 /*
  * Author: Mantsory
- * Version updated: 2.2.1
+ * Version updated: 2.2.2
  */
 package GameGUI;
 
@@ -11,42 +11,60 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-public class MineButton {
+public class GameButtons {
 
-    public static JButton[][] initMineButtons(JPanel[][] panel) {
+    public static JButton[][] initMineButtons(JPanel[][] panel, JButton playAgainButton) {
         JButton[][] buttons = new JButton[GameBoard.cols][GameBoard.rows];
         for (int col = 0; col < GameBoard.cols; col++) {
             for (int row = 0; row < GameBoard.rows; row++) {
                 initButtonPanel(col, row, panel);
                 buttons[col][row] = createMineButton("");
                 panel[col][row].add(buttons[col][row]);
-                MineButtonListener.initMineButtonListener(buttons, col, row);
-                buttons[col][row].addMouseListener(mouseListener(buttons, col, row));
+                GameButtonListeners.initMineButtonListener(buttons, playAgainButton, col, row);
+                buttons[col][row].addMouseListener(mouseListener(buttons, playAgainButton, col, row));
             }
         }
         return buttons;
     }
 
-    public static void updateMineButtons(JButton[][] buttons) {
+    public static JButton initPlayAgainButton(JFrame frame) {
+        JButton button = new JButton("Play again");
+        button.setPreferredSize(new Dimension(200,40));
+        button.setFont(new Font(null, Font.BOLD, 24));
+        button.setBackground(Color.LIGHT_GRAY);
+        GameButtonListeners.initPlayAgainListener(button, frame);
+        button.setEnabled(false);
+        button.setVisible(true);
+        return button;
+    }
+
+    public static void updateGameButtons(JButton[][] mineButtons, JButton playAgainButton) {
         for (int col = 0; col < GameBoard.cols; col++) {
             for (int row = 0; row < GameBoard.rows; row++) {
                 if (!GameBoard.gameMap[col][row].isOpen()) {
-                    buttons[col][row].setText("");
-                    buttons[col][row].setToolTipText("");
-                    buttons[col][row].setBackground(Color.white);
-                    buttons[col][row].setEnabled(true);
-                    ifFlagged(buttons, col, row, 'F', Color.RED);
+                    mineButtons[col][row].setText("");
+                    mineButtons[col][row].setToolTipText("");
+                    mineButtons[col][row].setBackground(Color.white);
+                    mineButtons[col][row].setEnabled(true);
+                    ifFlagged(mineButtons, col, row, 'F', Color.RED);
                 } else {
-                    ifMine(buttons, col, row, ' ', Color.GRAY);
-                    ifMine(buttons, col, row, 'B', Color.RED);
-                    ifMine(buttons, col, row, '1', Color.CYAN);
-                    ifMine(buttons, col, row, '2', Color.CYAN);
-                    ifMine(buttons, col, row, '3', Color.BLUE);
-                    ifMine(buttons, col, row, '4', Color.MAGENTA);
-                    ifMine(buttons, col, row, '5', Color.MAGENTA);
-                    ifMine(buttons, col, row, '6', Color.MAGENTA);
-                    ifMine(buttons, col, row, '7', Color.RED);
-                    ifMine(buttons, col, row, '8', Color.RED);
+                    ifMine(mineButtons, col, row, ' ', Color.GRAY);                    ifMine(mineButtons, col, row, '1', Color.CYAN);
+                    ifMine(mineButtons, col, row, '2', Color.CYAN);
+                    ifMine(mineButtons, col, row, '3', Color.BLUE);
+                    ifMine(mineButtons, col, row, '4', Color.MAGENTA);
+                    ifMine(mineButtons, col, row, '5', Color.MAGENTA);
+                    ifMine(mineButtons, col, row, '6', Color.MAGENTA);
+                    ifMine(mineButtons, col, row, '7', Color.RED);
+                    ifMine(mineButtons, col, row, '8', Color.RED);
+                    if (GameBoard.gameMap[col][row].getContent() == 'B') {
+                        ifMine(mineButtons, col, row, 'B', Color.RED);
+                        playAgainButton.setBackground(Color.GREEN);
+                        playAgainButton.setEnabled(true);
+                    }
+                }
+                if (GameBoard.openedTiles >= (GameBoard.cols * GameBoard.rows)- GameBoard.mines) {
+                    playAgainButton.setBackground(Color.GREEN);
+                    playAgainButton.setEnabled(true);
                 }
             }
         }
@@ -91,7 +109,7 @@ public class MineButton {
         }
     }
 
-    private static MouseAdapter mouseListener(JButton[][] buttons, int col, int row) {
+    private static MouseAdapter mouseListener(JButton[][] mineButtons, JButton playAgainButton, int col, int row) {
         return new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
@@ -105,12 +123,12 @@ public class MineButton {
 
             private void checkForRightClick(MouseEvent e) {
                 if (e.isPopupTrigger()) {
-                    MineButtonListener.input = "flag " + col + "-" + row;
-                    MineButtonListener.processInput = true;
+                    GameButtonListeners.input = "flag " + col + "-" + row;
+                    GameButtonListeners.processInput = true;
                     try {
                         Thread.sleep(50);
                     } catch (Exception error) {}
-                    updateMineButtons(buttons);
+                    updateGameButtons(mineButtons, playAgainButton);
                 }
             }
         };
