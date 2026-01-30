@@ -1,9 +1,10 @@
-package Game;/*
+/*
  * This is for creating the isGameActive map for Minesweeper.
  *
  * Author: Mantsory
- * Version updated: 2.2.1
+ * Version updated: 2.3
  */
+package Game;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -109,5 +110,29 @@ public class GameBoard {
 
         if (num == 0) gameMap[col][row].setContent(' ');
         else gameMap[col][row].setContent((char) (num + '0'));
+    }
+
+    public static void ifBlank(int col, int row) {
+        if (GameBoard.gameMap[col][row].getContent() != ' ') return;
+        for (int colToOpen = -1; colToOpen <= 1; colToOpen++) {
+            if (colToOpen + col >= 0 && colToOpen + col < GameBoard.cols) {
+                for (int rowToOpen = -1; rowToOpen <= 1; rowToOpen++) {
+                    if (rowToOpen + row >= 0 && rowToOpen + row < GameBoard.rows) {
+                        if (!GameBoard.gameMap[colToOpen + col][rowToOpen + row].isOpen() && !GameBoard.gameMap[colToOpen + col][rowToOpen + row].isFlagged()) {
+                            GameBoard.gameMap[colToOpen + col][rowToOpen + row].open();
+                            if (GameBoard.gameMap[colToOpen + col][rowToOpen + row].getContent() == ' ') {
+                                ifBlank(colToOpen + col, rowToOpen + row);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    public static void setDifficulty(int cols, int rows, int mines) {
+        GameBoard.rows = rows;
+        GameBoard.cols = cols;
+        GameBoard.mines = mines;
     }
 }

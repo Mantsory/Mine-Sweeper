@@ -1,6 +1,6 @@
 /*
  * Author: Mantsory
- * Version updated: 2.2.3
+ * Version updated: 2.3
  */
 
 package GameGUI;
@@ -43,7 +43,7 @@ public class GameWindow {
 
     private JFrame initFrame() {
         JFrame frame = new JFrame();
-        frame.setSize(1920, 1080);
+        frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
         frame.setLocationRelativeTo(null);
         frame.setMaximumSize(new Dimension(1920, 1080));
         frame.setMinimumSize(new Dimension(1920,1080));

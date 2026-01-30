@@ -1,9 +1,10 @@
-package Game;/*
+/*
  * A program that will run a GUI game of minesweeper.
  *
  * Author: Mantsory
- * Version updated: 2.2.3
+ * Version updated: 2.3
  */
+package Game;
 
 import GameGUI.GameWindow;
 import GameGUI.GameButtonListeners;
@@ -16,22 +17,21 @@ public class MineSweeper {
 
     public static boolean isGameActive = true;
     public static boolean isPlaying = true;
-    public static String version = "Snapshot 2.2.3";
+    public static String version = "Release 2.3";
 
     public static void main(String[] args) {
         while (isPlaying) {
+            GameBoard.setDifficulty(0, 0, 0);
+
             SwingUtilities.invokeLater(LauncherWindow::new);
 
-            while (true) {
+            while (!LauncherButtonListeners.playing) {
                 try {
-                    Thread.sleep(50);
+                    Thread.sleep(100);
                 } catch (Exception _) {}
-                if (LauncherButtonListeners.playing) {
-                    Input.getDifficulty(LauncherButtonListeners.difficulty);
-                    LauncherButtonListeners.playing = false;
-                    break;
-                }
             }
+
+            LauncherButtonListeners.playing = false;
 
             SwingUtilities.invokeLater(GameWindow::new);
 
@@ -40,12 +40,8 @@ public class MineSweeper {
 
             while (isGameActive) {
                 try {
-                    Thread.sleep(50);
+                    Thread.sleep(200);
                 } catch (Exception _) {}
-                if (GameButtonListeners.processInput) {
-                    Input.getGameInput(GameButtonListeners.input);
-                    GameButtonListeners.processInput = false;
-                }
             }
 
             while (true) {

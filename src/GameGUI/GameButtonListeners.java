@@ -1,8 +1,10 @@
 /*
  * Author: Mantsory
- * Version 2.2.3
+ * Version 2.3
  */
 package GameGUI;
+
+import Game.GameBoard;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -19,11 +21,9 @@ public class GameButtonListeners {
         mineButtons[col][row].addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                input = "open " + col + "-" + row;
-                processInput = true;
-                try {
-                    Thread.sleep(50);
-                } catch (Exception _) {}
+                if (GameBoard.gameMap[col][row].open()) {
+                    GameBoard.ifBlank(col, row);
+                }
                 updateGameButtons(mineButtons, playAgainButton, topPanel, label);
             }
         });

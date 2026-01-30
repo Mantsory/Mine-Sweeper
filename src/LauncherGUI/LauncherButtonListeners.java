@@ -1,60 +1,64 @@
 /*
  * Author: Mantsory
- * Version: 2.2.3
+ * Version: 2.3
  */
 
 package LauncherGUI;
+
+import Game.GameBoard;
 
 import javax.swing.*;
 import java.awt.*;
 
 public class LauncherButtonListeners {
-    public static String difficulty = null;
     public static boolean playing = false;
+    public static boolean isCustom = false;
 
     public static void difButtonListener(JButton easy, JButton norm, JButton hard, JButton custom, JTextField[] customDifficulty) {
-        easy.addActionListener(e -> {
+        easy.addActionListener(_ -> {
             enableAllDifButs(easy, norm, hard, custom);
             easy.setEnabled(false);
             easy.setBackground(Color.DARK_GRAY);
             customBut(customDifficulty, false);
-            difficulty = "easy";
+            GameBoard.setDifficulty(10, 10, 12);
+            isCustom = false;
         });
-        norm.addActionListener(e -> {
+        norm.addActionListener(_ -> {
             enableAllDifButs(easy, norm, hard, custom);
             norm.setEnabled(false);
             norm.setBackground(Color.DARK_GRAY);
             customBut(customDifficulty, false);
-            difficulty = "norm";
+            GameBoard.setDifficulty(10, 10, 20);
+            isCustom = false;
         });
-        hard.addActionListener(e -> {
+        hard.addActionListener(_ -> {
             enableAllDifButs(easy, norm, hard, custom);
             hard.setEnabled(false);
             hard.setBackground(Color.DARK_GRAY);
             customBut(customDifficulty, false);
-            difficulty = "hard";
+            GameBoard.setDifficulty(10, 10, 25);
+            isCustom = false;
         });
-        custom.addActionListener(e -> {
+        custom.addActionListener(_ -> {
             enableAllDifButs(easy, norm, hard, custom);
             custom.setEnabled(false);
             custom.setBackground(Color.DARK_GRAY);
             customBut(customDifficulty, true);
-            difficulty = "custom";
+            GameBoard.setDifficulty(0, 0, 0);
+            isCustom = true;
         });
     }
 
     public static void playButtonListener(JButton play, JFrame frame, JTextField[] customFields, JLabel label) {
         play.getKeyListeners();
-        play.addActionListener(e -> {
-            if (difficulty == null) {
+        play.addActionListener(_ -> {
+            if (!isCustom && GameBoard.cols == 0) {
                 System.out.println("You need to select a difficulty.");
                 label.setText("You need to select a difficulty.");
-            } else if (difficulty.equals("easy")
-                    ||difficulty.equals("norm")
-                    ||difficulty.equals("hard")) {
+            } else if (GameBoard.mines > 0) {
                 playing = true;
                 frame.dispose();
-            } else if (difficulty.equals("custom")){
+            } else if (isCustom){
                 try {
                     int i = Integer.parseInt(customFields[0].getText());
                     boolean b = i <= 50 && i > 1;
@@ -110,7 +114,10 @@ public class LauncherButtonListeners {
                 }
                 customFields[2].setBackground(Color.WHITE);
 
-                difficulty = customFields[0].getText() + "-" + customFields[1].getText() + ":" + customFields[2].getText();
+                int rows = Integer.parseInt(customFields[0].getText());
+                int cols = Integer.parseInt(customFields[1].getText());
+                int mines = Integer.parseInt(customFields[2].getText());
+                GameBoard.setDifficulty(rows, cols, mines);
                 playing = true;
                 frame.dispose();
             }

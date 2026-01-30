@@ -1,6 +1,6 @@
 /*
  * Author: Mantsory
- * Version updated: 2.1.8
+ * Version updated: 2.3
  */
 
 package LauncherGUI;
@@ -33,9 +33,7 @@ public class LauncherButtons {
         button.addKeyListener(new KeyAdapter() {
             public void keyPressed(KeyEvent e) {
                 if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-                    if (LauncherButtonListeners.difficulty != null) {
-                        button.doClick();
-                    }
+                    button.doClick();
                 }
             }
         });

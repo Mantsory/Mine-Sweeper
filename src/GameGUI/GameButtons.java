@@ -1,10 +1,11 @@
 /*
  * Author: Mantsory
- * Version updated: 2.2.3
+ * Version updated: 2.3
  */
 package GameGUI;
 
 import Game.GameBoard;
+import Game.MineSweeper;
 
 import javax.swing.*;
 import java.awt.*;
@@ -39,6 +40,7 @@ public class GameButtons {
     }
 
     public static void updateGameButtons(JButton[][] mineButtons, JButton playAgainButton, JPanel topPanel, JLabel label) {
+        boolean lost = false;
         for (int col = 0; col < GameBoard.cols; col++) {
             for (int row = 0; row < GameBoard.rows; row++) {
                 if (!GameBoard.gameMap[col][row].isOpen()) {
@@ -64,14 +66,19 @@ public class GameButtons {
                         label.setText("YOU LOSS! You found a mine.");
                         topPanel.add(label);
                         playAgainButton.setEnabled(true);
+                        lost = true;
+                        MineSweeper.isGameActive = false;
+                        GameBoard.printBoard();
                     }
-                }
-                if (GameBoard.openedTiles >= (GameBoard.cols * GameBoard.rows)- GameBoard.mines) {
-                    playAgainButton.setBackground(Color.GREEN);
-                    topPanel.setBackground(Color.GREEN);
-                    label.setText("YOU WIN! You found all none-mine spaces.");
-                    topPanel.add(label);
-                    playAgainButton.setEnabled(true);
+                    if (GameBoard.openedTiles >= (GameBoard.cols * GameBoard.rows)- GameBoard.mines && !lost) {
+                        playAgainButton.setBackground(Color.GREEN);
+                        topPanel.setBackground(Color.GREEN);
+                        label.setText("YOU WIN! You found all none-mine spaces.");
+                        topPanel.add(label);
+                        playAgainButton.setEnabled(true);
+                        MineSweeper.isGameActive = false;
+                        GameBoard.printBoard();
+                    }
                 }
             }
         }
@@ -130,11 +137,7 @@ public class GameButtons {
 
             private void checkForRightClick(MouseEvent e) {
                 if (e.isPopupTrigger()) {
-                    GameButtonListeners.input = "flag " + col + "-" + row;
-                    GameButtonListeners.processInput = true;
-                    try {
-                        Thread.sleep(50);
-                    } catch (Exception _) {}
+                    GameBoard.gameMap[col][row].flag();
                     updateGameButtons(mineButtons, playAgainButton, topPanel, label);
                 }
             }
