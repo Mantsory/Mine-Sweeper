@@ -1,6 +1,6 @@
 /*
  * Author: Mantsory
- * Version: 2.1.8
+ * Version: 2.2.1
  */
 
 package LauncherGUI;
@@ -71,10 +71,10 @@ public class LauncherButtonListeners {
 
                 try {
                     int i = Integer.parseInt(customFields[1].getText());
-                    boolean b = i <= 50 && i > 1;
+                    boolean b = i <= 35 && i > 1;
                     if (!b) {
-                        System.out.println("Number is out of bounds 2-50.");
-                        label.setText("Number is out of bounds 2-50.");
+                        System.out.println("Number is out of bounds 2-35.");
+                        label.setText("Number is out of bounds 2-35.");
                         customFields[1].setBackground(Color.RED);
                         return;
                     }
@@ -94,7 +94,7 @@ public class LauncherButtonListeners {
                     int maxMines = (cols*rows-1);
                     boolean b = i <= maxMines && i > 0;
                     if (!b) {
-                        System.out.println("Number is out of bounds 0-2499.");
+                        System.out.println("Number is out of bounds 0-1749.");
                         label.setText("Number is out of bounds 1-" + maxMines + ".");
                         customFields[2].setBackground(Color.RED);
                         return;

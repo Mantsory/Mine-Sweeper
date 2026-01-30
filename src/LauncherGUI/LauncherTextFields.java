@@ -1,6 +1,6 @@
 /*
  * Author: Mantsory
- * Version updated: 2.1.8
+ * Version updated: 2.2.1
  */
 
 package LauncherGUI;
@@ -20,8 +20,8 @@ public class LauncherTextFields {
     public static void setFieldTips(JTextField[] fields, boolean active) {
         if (active) {
             fields[0].setToolTipText("Number of columns. 2-50");
-            fields[1].setToolTipText("Number of rows. 2-50");
-            fields[2].setToolTipText("Number of mines. 1-2499");
+            fields[1].setToolTipText("Number of rows. 2-35");
+            fields[2].setToolTipText("Number of mines. 1-1749");
         } else {
             for (JTextField field : fields) {
                 field.setToolTipText("Only for custom difficulty.");

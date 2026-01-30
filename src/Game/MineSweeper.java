@@ -1,10 +1,12 @@
-/*
+package Game;/*
  * A program that will run a terminal game of minesweeper.
  *
  * Author: Mantsory
- * Version: 2.2
+ * Version: 2.2.1
  */
 
+import GameGUI.GameWindow;
+import GameGUI.MineButtonListener;
 import LauncherGUI.LauncherButtonListeners;
 import LauncherGUI.LauncherWindow;
 
@@ -42,12 +44,19 @@ public class MineSweeper {
                 }
             }
 
+            SwingUtilities.invokeLater(GameWindow::new);
+
             GameBoard.generateMap();
             isGameActive = true;
 
             while (isGameActive) {
-                GameBoard.printBoard();
-                Input.getGameInput();
+                try {
+                    Thread.sleep(50);
+                } catch (Exception e) {}
+                if (MineButtonListener.processInput) {
+                    Input.getGameInput(MineButtonListener.input);
+                    MineButtonListener.processInput = false;
+                }
             }
 
             Input.playAgain();

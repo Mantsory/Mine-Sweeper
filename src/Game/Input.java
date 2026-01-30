@@ -1,6 +1,6 @@
-/*
+package Game;/*
  * Author: Mantsory
- * Version updated: 2.1.8
+ * Version updated: 2.2.1
  */
 
 import java.util.Scanner;
@@ -32,10 +32,7 @@ public class Input {
         }
     }
 
-    public static void getGameInput() {
-        Scanner in = new Scanner(System.in);
-
-        String input = in.nextLine();
+    public static void getGameInput(String input) {
         isKeywordOpen(input);
         isKeywordFlag(input);
     }
@@ -65,19 +62,11 @@ public class Input {
             String string = input.substring(input.indexOf("open") + 4);
             string = string.trim();
 
-            try {
-                int row = Integer.parseInt(string.substring(0, string.indexOf("-")));
-                int col = Integer.parseInt(string.substring(string.indexOf("-") + 1));
-            } catch (Exception e) {
-                System.out.println("Invalid input");
-                return;
-            }
-
             int col = Integer.parseInt(string.substring(0, string.indexOf("-")));
             int row = Integer.parseInt(string.substring(string.indexOf("-") + 1));
 
             if (col >= GameBoard.cols || row >= GameBoard.rows) {
-                System.out.println("Input is out of bounds.");
+                System.out.println("Game input is out of bounds.");
                 return;
             }
             if (GameBoard.gameMap[col][row].open()) {
@@ -88,8 +77,6 @@ public class Input {
                 System.out.println("Couldn't open space " + col + "-" + row + ". This is usually because it is already open or flagged.");
             }
             checkGameEnd(col, row);
-        } else {
-            System.out.println("Invalid input.");
         }
     }
 
@@ -98,7 +85,7 @@ public class Input {
             if (colToOpen + col >= 0 && colToOpen + col < GameBoard.cols) {
                 for (int rowToOpen = -1; rowToOpen <= 1; rowToOpen++) {
                     if (rowToOpen + row >= 0 && rowToOpen + row < GameBoard.rows) {
-                        if (!GameBoard.gameMap[colToOpen + col][rowToOpen + row].isOpen()) {
+                        if (!GameBoard.gameMap[colToOpen + col][rowToOpen + row].isOpen() && !GameBoard.gameMap[colToOpen + col][rowToOpen + row].isFlagged()) {
                             GameBoard.gameMap[colToOpen + col][rowToOpen + row].open();
                             GameBoard.openedTiles++;
                             if (GameBoard.gameMap[colToOpen + col][rowToOpen + row].getContent() == ' ')
@@ -112,22 +99,14 @@ public class Input {
 
     public static void isKeywordFlag(String input) {
         if (input.contains("flag")&&input.contains("-")) {
-            String string = input.substring(input.indexOf("flag" + 4));
+            String string = input.substring(input.indexOf("flag") + 4);
             string = string.trim();
-
-            try {
-                int row = Integer.parseInt(string.substring(0, string.indexOf("-")));
-                int col = Integer.parseInt(string.substring(string.indexOf("-") + 1));
-            } catch (Exception e) {
-                System.out.println("Invalid input");
-                return;
-            }
 
             int col = Integer.parseInt(string.substring(0, string.indexOf("-")));
             int row = Integer.parseInt(string.substring(string.indexOf("-") + 1));
 
             if (col >= GameBoard.cols || row >= GameBoard.rows) {
-                System.out.println("Input is out of bounds.");
+                System.out.println("Game input is out of bounds.");
                 return;
             }
 

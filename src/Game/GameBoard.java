@@ -1,8 +1,8 @@
-/*
+package Game;/*
  * This is for creating the isGameActive map for Minesweeper.
  *
  * Author: Mantsory
- * Version updated: 2.1.8
+ * Version updated: 2.2.1
  */
 
 import java.util.HashSet;

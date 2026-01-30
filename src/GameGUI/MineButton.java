@@ -1,0 +1,118 @@
+/*
+ * Author: Mantsory
+ * Version updated: 2.2.1
+ */
+package GameGUI;
+
+import Game.GameBoard;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
+public class MineButton {
+
+    public static JButton[][] initMineButtons(JPanel[][] panel) {
+        JButton[][] buttons = new JButton[GameBoard.cols][GameBoard.rows];
+        for (int col = 0; col < GameBoard.cols; col++) {
+            for (int row = 0; row < GameBoard.rows; row++) {
+                initButtonPanel(col, row, panel);
+                buttons[col][row] = createMineButton("");
+                panel[col][row].add(buttons[col][row]);
+                MineButtonListener.initMineButtonListener(buttons, col, row);
+                buttons[col][row].addMouseListener(mouseListener(buttons, col, row));
+            }
+        }
+        return buttons;
+    }
+
+    public static void updateMineButtons(JButton[][] buttons) {
+        for (int col = 0; col < GameBoard.cols; col++) {
+            for (int row = 0; row < GameBoard.rows; row++) {
+                if (!GameBoard.gameMap[col][row].isOpen()) {
+                    buttons[col][row].setText("");
+                    buttons[col][row].setToolTipText("");
+                    buttons[col][row].setBackground(Color.white);
+                    buttons[col][row].setEnabled(true);
+                    ifFlagged(buttons, col, row, 'F', Color.RED);
+                } else {
+                    ifMine(buttons, col, row, ' ', Color.GRAY);
+                    ifMine(buttons, col, row, 'B', Color.RED);
+                    ifMine(buttons, col, row, '1', Color.CYAN);
+                    ifMine(buttons, col, row, '2', Color.CYAN);
+                    ifMine(buttons, col, row, '3', Color.BLUE);
+                    ifMine(buttons, col, row, '4', Color.MAGENTA);
+                    ifMine(buttons, col, row, '5', Color.MAGENTA);
+                    ifMine(buttons, col, row, '6', Color.MAGENTA);
+                    ifMine(buttons, col, row, '7', Color.RED);
+                    ifMine(buttons, col, row, '8', Color.RED);
+                }
+            }
+        }
+    }
+
+    private static JButton createMineButton(String text) {
+        JButton button = new JButton(text);
+        button.setPreferredSize(new Dimension(15,15));
+        button.setFont(new Font(null, Font.BOLD, 12));
+        button.setBackground(Color.white);
+        button.setMargin(new Insets(0, 0, 0, 0));
+        button.setVisible(true);
+        return button;
+    }
+
+    private static void initButtonPanel(int col, int row, JPanel[][] panels) {
+        panels[col][row] = new JPanel();
+        panels[col][row].setLayout(new FlowLayout());
+        panels[col][row].setBackground(Color.BLACK);
+        panels[col][row].setPreferredSize(new Dimension(15, 15));
+    }
+
+    private static void ifMine(JButton[][] buttons, int col, int row, Character cont, Color color) {
+        if (GameBoard.gameMap[col][row].getContent() == cont) {
+            buttons[col][row].setFont(new Font(null, Font.BOLD, 12));
+            buttons[col][row].setForeground(Color.BLACK);
+            buttons[col][row].setToolTipText(cont.toString());
+            buttons[col][row].setText(cont.toString());
+            buttons[col][row].setBackground(color);
+            buttons[col][row].setEnabled(false);
+        }
+    }
+
+    private static void ifFlagged(JButton[][] buttons, int col, int row, Character cont, Color color) {
+        if (GameBoard.gameMap[col][row].isFlagged()) {
+            buttons[col][row].setFont(new Font(null, Font.BOLD, 12));
+            buttons[col][row].setForeground(Color.BLACK);
+            buttons[col][row].setToolTipText(cont.toString());
+            buttons[col][row].setText(cont.toString());
+            buttons[col][row].setBackground(color);
+            buttons[col][row].setEnabled(false);
+        }
+    }
+
+    private static MouseAdapter mouseListener(JButton[][] buttons, int col, int row) {
+        return new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                checkForRightClick(e);
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                checkForRightClick(e);
+            }
+
+            private void checkForRightClick(MouseEvent e) {
+                if (e.isPopupTrigger()) {
+                    MineButtonListener.input = "flag " + col + "-" + row;
+                    MineButtonListener.processInput = true;
+                    try {
+                        Thread.sleep(50);
+                    } catch (Exception error) {}
+                    updateMineButtons(buttons);
+                }
+            }
+        };
+    }
+}

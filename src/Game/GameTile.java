@@ -1,8 +1,8 @@
-/*
+package Game;/*
  * This is for creating individual isGameActive tiles for Minesweeper.
  *
  * Author: Mantsory
- * Version updated: 2.1
+ * Version updated: 2.2.1
  */
 
 public class GameTile {
